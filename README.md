@@ -1,5 +1,9 @@
 # time-travellers
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/2a316b63-b3d2-4c70-a903-927b1023f116/deploy-status)](https://app.netlify.com/sites/time-travellers/deploys)
+[![Licence](https://img.shields.io/github/license/noahliechti/time-travellers?style=social)](https://github.com/NoahLiechti/time-travellers/blob/main/LICENSE.md)
+[![Live Demo](https://img.shields.io/badge/Live&nbsp;Preview-Click&nbsp;Me-green.svg?style=social)](https://time-travellers.netlify.app)
+
 ## Contracts
 
 - DAO
