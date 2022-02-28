@@ -6,7 +6,7 @@
 - Token
 - NFT
 
-##
+## Notes
 
 - you become a DAO member if you hold the TT coins in your wallet
 - you voting power is dependent of the amount of coins you are holding
