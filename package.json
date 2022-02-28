@@ -42,8 +42,8 @@
   },
   "scripts": {
     "analyze": "npm run build && source-map-explorer 'build/static/js/*.js'",
-    "dev": "REACT_APP_ENV=development react-scripts start",
-    "start": "NODE_ENV=development netlify dev --port 5000",
+    "dev": "react-scripts start",
+    "start": "netlify dev --port 5000",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "lint": "eslint '**' --no-error-on-unmatched-pattern && npm run solhint",
