@@ -20,10 +20,14 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 
 module.exports = {
   solidity: "0.8.7",
-  defaultNetwork: "hardhat",
+  defaultNetwork: "localhost",
   networks: {
     hardhat: {
-      chainId: 1337, // default is 31337: https://hardhat.org/metamask-issue.html
+      chainId: 31337,
+    },
+    localhost: {
+      // used for stand-alone hardhat network
+      chainId: 31337, // default is 31337: https://hardhat.org/metamask-issue.html
     },
     rinkeby: {
       chainId: 4,
