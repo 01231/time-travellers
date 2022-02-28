@@ -7,22 +7,25 @@ const {
 
 const { ethers, network } = hre;
 
-async function main() {
+async function deploy(contractName, args = []) {
   const { chainId } = network.config;
-  const contractName = "TimeTravellersNFT";
-  const args = ["ipfs://"];
 
-  const TTN = await ethers.getContractFactory(contractName);
-  const ttn = await TTN.deploy(...args);
+  const CF = await ethers.getContractFactory(contractName);
+  const contract = await CF.deploy(...args);
 
-  await ttn.deployed();
-  await storeContractAddress(ttn, contractName);
-  await verifyContract(ttn, args);
+  await contract.deployed();
+  await storeContractAddress(contract, contractName);
+  await verifyContract(contract, args);
 
   console.log("Deployer:", (await ethers.getSigners())[0].address);
-  console.log(`${contractName} deployed to:`, ttn.address);
+  console.log(`${contractName} deployed to:`, contract.address);
 
-  printEtherscanLink(ttn.address, chainId);
+  printEtherscanLink(contract.address, chainId);
+}
+
+async function main() {
+  await deploy("TimeTravellersNFT", ["ipfs://"]);
+  await deploy("TimeTravellersToken");
 }
 
 main().catch((error) => {
