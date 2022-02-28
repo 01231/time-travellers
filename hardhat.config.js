@@ -28,7 +28,7 @@ module.exports = {
     localhost: {
       // used for stand-alone hardhat network
       chainId: 31337, // default is 31337: https://hardhat.org/metamask-issue.html
-    },
+      /* },
     rinkeby: {
       chainId: 4,
       url: `https://eth-rinkeby.alchemyapi.io/v2/${ALCHEMY_API_KEY_RINKEBY}`,
@@ -42,5 +42,7 @@ module.exports = {
   },
   etherscan: {
     apiKey: POLYGON_SCAN,
+  },*/
+    },
   },
 };
