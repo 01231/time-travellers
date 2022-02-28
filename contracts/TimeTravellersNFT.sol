@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 
 import "hardhat/console.sol";
 
-contract TweetToken is ERC721, ERC721URIStorage, AccessControl {
+contract TimeTravellersNFT is ERC721, ERC721URIStorage, AccessControl {
     using Counters for Counters.Counter;
 
     bool public saleIsActive;
@@ -27,7 +27,7 @@ contract TweetToken is ERC721, ERC721URIStorage, AccessControl {
     );
 
     constructor(string memory _newBaseURI)
-        ERC721("Time Travellers NFT", "TTN")
+        ERC721("Time-Travellers-NFT", "TTN")
     {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(MINTER_ROLE, msg.sender);
