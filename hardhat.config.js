@@ -23,7 +23,7 @@ module.exports = {
   defaultNetwork: "localhost",
   networks: {
     hardhat: {
-      chainId: 31337,
+      chainId: 1337,
     },
     localhost: {
       // used for stand-alone hardhat network
