@@ -36,7 +36,14 @@ function createAndWritePersistentContractFiles(chainId, contractName, address) {
     if (err == null) {
       // File exists
       const addresses = JSON.parse(data);
-      addresses[chainId][contractName] = address;
+
+      if (addresses[chainId]) {
+        addresses[chainId][contractName] = address;
+      } else {
+        addresses[chainId] = {
+          [contractName]: address,
+        };
+      }
 
       writeContractAddressFile(addresses);
     } else if (err.code === "ENOENT") {
