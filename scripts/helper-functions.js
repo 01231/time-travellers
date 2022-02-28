@@ -99,7 +99,9 @@ exports.printEtherscanLink = (address, chainId, type = "address") => {
     case 80001:
       link = "https://mumbai.polygonscan.com";
       break;
-    case 1337:
+    case 1337: // metamask default
+      return;
+    case 31337: // hardhat default
       return;
     default:
       return;
@@ -107,7 +109,8 @@ exports.printEtherscanLink = (address, chainId, type = "address") => {
   console.log(`Inspect deployed contract at ${link}/${type}/${address}`);
 };
 
-const isLocalNetwork = () => hre.network.config.chainId === 31337;
+const isLocalNetwork = () =>
+  hre.network.config.chainId === 31337 || hre.network.config.chainId === 1337;
 exports.isLocalNetwork = isLocalNetwork;
 
 exports.verifyContract = async (contract, args) => {
