@@ -99,9 +99,9 @@ exports.printEtherscanLink = (address, chainId, type = "address") => {
     case 80001:
       link = "https://mumbai.polygonscan.com";
       break;
-    case 1337: // metamask default
+    case 1337: // metamask
       return;
-    case 31337: // hardhat default
+    case 31337: // hardhat
       return;
     default:
       return;
@@ -148,7 +148,9 @@ exports.printEtherscanLink = (address, chainId, type = "address") => {
     case 80001:
       link = "https://mumbai.polygonscan.com";
       break;
-    case 1337:
+    case 1337: // metamask
+      return;
+    case 31337: // hardhat
       return;
     default:
       return;
