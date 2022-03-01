@@ -1,14 +1,14 @@
 import React from "react";
 
 function Main({
-  fileURL,
+  // fileURL,
   account,
   network,
   getAccount,
-  UploadJson,
-  handleUrlChange,
-  changeFormInputName,
-  changeFormInputDescription,
+  // UploadJson,
+  // handleUrlChange,
+  // changeFormInputName,
+  // changeFormInputDescription,
 }) {
   return (
     <div>
