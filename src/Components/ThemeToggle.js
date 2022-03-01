@@ -1,7 +1,11 @@
 import React from "react";
 import { ToggleButtonGroup, ToggleButton } from "@mui/material";
 
-function ThemeToggle({ defaultTheme, handleChange: propsChange }) {
+function ThemeToggle({
+  defaultTheme,
+  handleChange: propsChange,
+  formIsSubmitting,
+}) {
   const [theme, setTheme] = React.useState(defaultTheme);
 
   const handleChange = (e, newTheme) => {
@@ -17,6 +21,7 @@ function ThemeToggle({ defaultTheme, handleChange: propsChange }) {
       exclusive
       onChange={handleChange}
       size="large"
+      disabled={formIsSubmitting}
       sx={{ mt: 2 }}
     >
       <ToggleButton name="theme" value="light" aria-label="light theme">

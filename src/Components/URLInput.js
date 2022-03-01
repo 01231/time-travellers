@@ -38,7 +38,7 @@ function ImageCreation({ state, formIsSubmitting, handleChange }) {
         fullWidth
         name="tweetURL"
         value={state.tweetURL}
-        // disabled={formIsSubmitting}
+        disabled={formIsSubmitting}
         onChange={(e) => handleChange(e.target)}
         error={!!state.invalidTweetURLMessage}
         helperText={state.invalidTweetURLMessage}
