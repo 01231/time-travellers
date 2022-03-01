@@ -1,7 +1,9 @@
 import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
+import { ThemeProvider, CssBaseline } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import Main from "./Components/Main";
+import theme from "./config/theme";
 
 function App() {
   const [account, setAccount] = useState("");
@@ -63,17 +65,24 @@ function App() {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <Router className="App">
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <Main network={network} account={account} getAccount={getAccount} />
-          }
-        />
-        <Route path="*" element={<div>404</div>} />
-      </Routes>
-    </Router>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Router className="App">
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Main
+                network={network}
+                account={account}
+                getAccount={getAccount}
+              />
+            }
+          />
+          <Route path="*" element={<div>404</div>} />
+        </Routes>
+      </Router>
+    </ThemeProvider>
   );
 }
 
