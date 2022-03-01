@@ -7,7 +7,7 @@ import Main from "./Components/Main.js";
 
 function App() {
   const [account, setAccount] = useState("");
-  //const provider = new ethers.providers.Web3Provider(window.ethereum);
+  // const provider = new ethers.providers.Web3Provider(window.ethereum);
 
   // side loaded
   async function FirstLoadGettingAccount() {
@@ -77,11 +77,12 @@ function App() {
         <Route path="/" element={<div>home</div>} />
         <Route path="*" element={<div>404</div>} />
       </Routes>
-      {/* eslint-disable-next-line */}
+      {/* eslint-disable  */}
       <Main
         network={network}
         FirstLoadGettingAccount={FirstLoadGettingAccount}
       />
+      {/* eslint-enable  */}
     </Router>
   );
 }
