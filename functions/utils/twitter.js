@@ -13,15 +13,7 @@ const getTweetId = (tweetURL) => {
 
 exports.getTweetId = getTweetId;
 
-const getTweetAuthorName = (tweetURL) => {
-  const splitTweetURL = tweetURL.split("/");
-  const thirdLastItem = splitTweetURL[splitTweetURL.length - 3];
-  return thirdLastItem;
-};
-
-exports.getTweetAuthorName = this.getTweetAuthorName;
-
-const getAttributes = ({ data, includes }, theme, language) => [
+const getAttributes = ({ data, includes }, theme) => [
   {
     trait_type: "attachments", // e.g 2
     value:
@@ -36,10 +28,10 @@ const getAttributes = ({ data, includes }, theme, language) => [
         ? data.attachments.poll_ids.length
         : 0,
   },
-  {
-    trait_type: "language", // e.g "en"
-    value: language,
-  },
+  // {
+  //   trait_type: "language", // e.g "en"
+  //   value: language,
+  // },
   {
     display_type: "date",
     trait_type: "creation", // e.g 1546360800
@@ -87,7 +79,7 @@ const getAttributes = ({ data, includes }, theme, language) => [
   },
 ];
 
-exports.getMetadata = async (tweetURL, theme, language) => {
+exports.getMetadata = async (tweetURL, theme) => {
   const tweetId = getTweetId(tweetURL);
   const api = `https://api.twitter.com/2/tweets/${tweetId}?tweet.fields=attachments,created_at,lang,text,public_metrics,source&user.fields=verified&expansions=author_id`;
   const headers = {
@@ -102,12 +94,13 @@ exports.getMetadata = async (tweetURL, theme, language) => {
           throw new Error(res.errors[0].detail);
         } else {
           const { username } = res.includes.users[0];
-          const attributes = getAttributes(res, theme, language);
+          const attributes = getAttributes(res, theme);
 
           const metadata = {
+            // TODO: change name and description
             name: `@${username} #${tweetId}`,
             description: `Tweet by @${username}.\nOriginal: ${tweetURL}`,
-            external_link: "https://tweettoken.io",
+            external_link: "https://time-travellers.netlify.app",
             attributes: attributes,
           };
           resolve(metadata);
@@ -183,10 +176,8 @@ exports.createScreenshot = async ({
   }
 };
 
-exports.checkTweetURL = (tweetURL, twitterUserId) => {
+exports.checkTweetURL = (tweetURL) => {
   const tweetId = getTweetId(tweetURL);
-  const tweetAuthorName = getTweetAuthorName(tweetURL);
-
   const api = `https://api.twitter.com/2/tweets/${tweetId}?expansions=author_id`;
   const headers = {
     Authorization: `Bearer ${TWITTER_BEARER_TOKEN}`,
@@ -204,16 +195,7 @@ exports.checkTweetURL = (tweetURL, twitterUserId) => {
           throw new Error(res.errors[0].detail);
         } else {
           // Users should only be able to mint their own tweets
-          if (twitterUserId === res.data.author_id) {
-            if (tweetAuthorName === res.includes.users[0].username) {
-              resolve();
-            } else {
-              throw new Error(
-                "This Tweet doesn't belong to the specified user!"
-              );
-            }
-          }
-          throw new Error("You are not the author of this Tweet!");
+          resolve();
         }
       })
       .catch((err) => {

@@ -8,9 +8,7 @@ const {
   ALCHEMY_API_KEY_RINKEBY,
 } = require("./utils/config");
 
-const formatDate = (date) => {
-  return Math.round(date / 1e3);
-};
+const formatDate = (date) => Math.round(date / 1e3);
 
 const strategies = JSON.stringify([
   {
@@ -108,9 +106,11 @@ const createProposal = async () => {
     plugins: plugins,
     metadata: JSON.stringify({}),
   });
+
+  console.log("receipt", receipt);
 };
 
-const handler = async function (event, context) {
+const handler = async (event, context) => {
   console.log("Received event:", event);
 
   await createProposal();

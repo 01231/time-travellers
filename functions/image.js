@@ -9,12 +9,12 @@ const { TWEET_WIDTH, TWEET_PADDING, TWEET_HIDE_CARD, TWEET_HIDE_THREAD } =
   TWEET_SETTINGS;
 
 exports.handler = async (event) => {
-  const { language, theme, tweetURL, userId } = JSON.parse(event.body);
+  const { theme, tweetURL, language } = JSON.parse(event.body);
   let tweetClone;
   let metadata;
 
   try {
-    await checkTweetURL(tweetURL, userId);
+    await checkTweetURL(tweetURL);
 
     tweetClone = await createScreenshot({
       width: TWEET_WIDTH,
@@ -25,8 +25,7 @@ exports.handler = async (event) => {
       hideThread: TWEET_HIDE_THREAD,
       language: language,
     });
-
-    metadata = await getMetadata(tweetURL, theme, language);
+    metadata = await getMetadata(tweetURL, theme);
   } catch (err) {
     return {
       statusCode: 400,
