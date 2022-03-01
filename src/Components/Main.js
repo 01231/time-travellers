@@ -3,7 +3,6 @@ import React from "react";
 function Main({ account, network, getAccount }) {
   return (
     <div>
-      <div>Main</div>
       <div>{account}</div>
       <div>
         {network.name}: {network.chainId}
