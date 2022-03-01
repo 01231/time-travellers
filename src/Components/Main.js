@@ -1,11 +1,12 @@
 import React from "react";
 // eslint-disable-next-line
-const Main = ({ account, chainId, FirstLoadGettingAccount }) => {
+const Main = ({ account, network, FirstLoadGettingAccount }) => {
   return (
     <div>
-      <div>Main</div>
       <div>{account}</div>
-      <div>{chainId}</div>
+      <div>
+        {network.name}: {network.chainId}
+      </div>
       <button
         type="button"
         className="btn-danger"
