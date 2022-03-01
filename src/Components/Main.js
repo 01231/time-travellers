@@ -1,7 +1,6 @@
 import React from "react";
 import { Button, Container, Card, CardMedia } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-
 import ThemeToggle from "./ThemeToggle";
 import URLInput from "./URLInput";
 
@@ -104,6 +103,42 @@ function Main({ account, network, getAccount }) {
     }
   };
 
+  // eslint-disable-next-line arrow-body-style
+  const getTokenURI = () => {
+    return fetch(`${BASE_URL}${FUNCTIONS_PREFIX}/token`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      body: JSON.stringify({
+        imageData: state.imageData,
+        tweetURL: state.tweetURL,
+        metadata: state.nftMetadata,
+        chainId: network.chainId,
+      }),
+    })
+      .then(async (res) => {
+        if (res.status === 200) return res.json();
+        const errorMessage = (await res.json()).error;
+        throw new Error(errorMessage);
+      })
+      .then((data) => data.tokenURI)
+      .catch((err) => {
+        setState({
+          ...state,
+          formErrorMessage: err.message,
+        });
+        setFormIsSubmitting(false);
+      });
+  };
+
+  const handleMint = async () => {
+    setFormIsSubmitting(true);
+    // const tokenURI = await getTokenURI();
+    await getTokenURI();
+    setFormIsSubmitting(false);
+  };
+
   return (
     <Container maxWidth="lg">
       <div>{account}</div>
@@ -136,13 +171,16 @@ function Main({ account, network, getAccount }) {
         Clone Tweet
       </LoadingButton>
       {state.imageData && (
-        <Card sx={{ width: 1, mt: 2 }}>
-          <CardMedia
-            component="img"
-            image={`data:image/png;base64,${state.imageData}`}
-            alt="screenshot of tweet"
-          />
-        </Card>
+        <>
+          <Card sx={{ width: 1, mt: 2 }}>
+            <CardMedia
+              component="img"
+              image={`data:image/png;base64,${state.imageData}`}
+              alt="screenshot of tweet"
+            />
+          </Card>
+          <Button onClick={handleMint}>Upload to IPFS</Button>
+        </>
       )}
     </Container>
   );
