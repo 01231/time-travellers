@@ -1,10 +1,66 @@
 import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
+import { create as ipfsHttpClient } from "ipfs-http-client";
 import Main from "./Components/Main";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
+  const client = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0");
+  const [fileURL, setFileURL] = useState(null);
+  const [formInput, setFormInput] = useState({ name: "", description: "" });
+
+  async function handleUrlChange(e) {
+    // check e.target.files without target [0]
+    // console.log(e.target.files)
+    const file = e.target.files[0];
+    // console.log(file)
+    try {
+      const added = await client.add(
+        file
+        /* , {
+                progress: (prog) => console.log(`received ${prog}`)
+            } */
+      );
+      // added is an object containing the path(hash), CID, and the size of the file
+      // console.log(added)
+      const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+      setFileURL(url);
+      // console.log(url)
+    } catch (error) {
+      console.log("Error uploading File:", error);
+    }
+  }
+
+  async function UploadJson() {
+    if (!formInput.name || !formInput.description || !fileURL) {
+      return;
+    }
+    // upload to IPFS but this time with metadata
+    // the metadata comes from a json, we need to stringify the data to upload it
+    const data = JSON.stringify({
+      name: formInput.name,
+      description: formInput.description,
+      image: fileURL,
+    });
+    // console.log(data)
+    try {
+      const added = await client.add(data);
+      const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+      // run a function that creates Sale and passes in the URL
+      // mintNFT(url);
+      console.log(url);
+    } catch (error) {
+      console.log("Error uploading File:", error);
+    }
+  }
+  function changeFormInputDescription(e) {
+    setFormInput({ ...formInput, description: e.target.value });
+  }
+  function changeFormInputName(e) {
+    setFormInput({ ...formInput, name: e.target.value });
+  }
+
   const [account, setAccount] = useState("");
   const [network, setNetwork] = useState({});
 
@@ -69,7 +125,16 @@ function App() {
         <Route
           path="/"
           element={
-            <Main network={network} account={account} getAccount={getAccount} />
+            <Main
+              fileURL={fileURL}
+              UploadJson={UploadJson}
+              changeFormInputName={changeFormInputName}
+              changeFormInputDescription={changeFormInputDescription}
+              handleUrlChange={handleUrlChange}
+              network={network}
+              account={account}
+              getAccount={getAccount}
+            />
           }
         />
         <Route path="*" element={<div>404</div>} />
