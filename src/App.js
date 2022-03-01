@@ -11,10 +11,8 @@ function App() {
   const [formInput, setFormInput] = useState({ name: "", description: "" });
 
   async function handleUrlChange(e) {
-    // check e.target.files without target [0]
-    // console.log(e.target.files)
     const file = e.target.files[0];
-    // console.log(file)
+
     try {
       const added = await client.add(
         file
@@ -23,11 +21,10 @@ function App() {
             } */
       );
       // added is an object containing the path(hash), CID, and the size of the file
-      // console.log(added)
       const url = `https://ipfs.infura.io/ipfs/${added.path}`;
       setFileURL(url);
-      // console.log(url)
     } catch (error) {
+      // eslint-disable-next-line
       console.log("Error uploading File:", error);
     }
   }
@@ -43,14 +40,14 @@ function App() {
       description: formInput.description,
       image: fileURL,
     });
-    // console.log(data)
+
     try {
       const added = await client.add(data);
       const url = `https://ipfs.infura.io/ipfs/${added.path}`;
-      // run a function that creates Sale and passes in the URL
-      // mintNFT(url);
+      // eslint-disable-next-line
       console.log(url);
     } catch (error) {
+      // eslint-disable-next-line
       console.log("Error uploading File:", error);
     }
   }

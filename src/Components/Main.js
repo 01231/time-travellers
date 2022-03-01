@@ -4,7 +4,6 @@ function Main({
   fileURL,
   account,
   network,
-  onChange,
   getAccount,
   UploadJson,
   handleUrlChange,
