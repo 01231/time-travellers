@@ -1,14 +1,15 @@
 import React from "react";
-
-const Main = (props) => {
+// eslint-disable-next-line
+const Main = ({ account, chainId, FirstLoadGettingAccount }) => {
   return (
     <div>
       <div>Main</div>
-      <div>{props.account}</div>
-      <div>{props.chainId}</div>
+      <div>{account}</div>
+      <div>{chainId}</div>
       <button
+        type="button"
         className="btn-danger"
-        onClick={(e) => props.FirstLoadGettingAccount(e)}
+        onClick={(e) => FirstLoadGettingAccount(e)}
       >
         Log in with Metamask
       </button>

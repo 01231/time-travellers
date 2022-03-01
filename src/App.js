@@ -2,6 +2,7 @@ import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import "bootstrap/dist/css/bootstrap.min.css";
+// eslint-disable-next-line
 import Main from "./Components/Main.js";
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
 
   // side loaded
   async function FirstLoadGettingAccount() {
+    // eslint-disable-next-line
     if (typeof window.ethereum !== undefined) {
       const accounts = await window.ethereum.request({
         method: "eth_requestAccounts",
@@ -25,6 +27,7 @@ function App() {
     window.location.reload();
   }
   // on chain change
+
   useEffect(() => {
     window.ethereum.on("chainChanged", handleChainChanged);
     return () => {
@@ -48,7 +51,7 @@ function App() {
     return () => {
       window.ethereum.removeListener("accountsChanged", handleAccountsChanged);
     };
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // network
   const [network, setNetwork] = useState({
@@ -56,21 +59,25 @@ function App() {
     name: "",
   });
 
-  async function gettingNetworkNameChainId() {
-    const network = await provider.getNetwork();
-    setNetwork(network);
-  }
-
   useEffect(() => {
+    const providerTwo = new ethers.providers.Web3Provider(window.ethereum);
+
+    async function gettingNetworkNameChainId() {
+      const getNetWork = await providerTwo.getNetwork();
+      setNetwork(getNetWork);
+    }
+
     FirstLoadGettingAccount();
     gettingNetworkNameChainId();
   }, []);
+
   return (
     <Router className="App">
       <Routes>
         <Route path="/" element={<div>home</div>} />
         <Route path="*" element={<div>404</div>} />
       </Routes>
+      {/* eslint-disable-next-line */}
       <Main FirstLoadGettingAccount={FirstLoadGettingAccount} />
     </Router>
   );
