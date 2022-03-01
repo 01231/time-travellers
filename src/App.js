@@ -137,6 +137,7 @@ function App() {
             />
           }
         />
+
         <Route path="*" element={<div>404</div>} />
       </Routes>
     </Router>
