@@ -2,17 +2,16 @@ import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import "bootstrap/dist/css/bootstrap.min.css";
-// eslint-disable-next-line
-import Main from "./Components/Main.js";
+import Main from "./Components/Main";
 
 function App() {
   const [account, setAccount] = useState("");
+  const [network, setNetwork] = useState({});
+
   // const provider = new ethers.providers.Web3Provider(window.ethereum);
 
-  // side loaded
-  async function FirstLoadGettingAccount() {
-    // eslint-disable-next-line
-    if (typeof window.ethereum !== undefined) {
+  async function getAccount() {
+    if (typeof window.ethereum !== "undefined") {
       const accounts = await window.ethereum.request({
         method: "eth_requestAccounts",
       });
@@ -23,11 +22,22 @@ function App() {
     }
   }
 
+  useEffect(() => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+    async function gettingNetworkNameChainId() {
+      const getNetWork = await provider.getNetwork();
+      setNetwork(getNetWork);
+    }
+
+    getAccount();
+    gettingNetworkNameChainId();
+  }, []);
+
   function handleChainChanged() {
-    // We recommend reloading the page, unless you must do otherwise
+    // We reload the page, because it is recommend by metamask
     window.location.reload();
   }
-  // on chain change
 
   useEffect(() => {
     window.ethereum.on("chainChanged", handleChainChanged);
@@ -53,36 +63,17 @@ function App() {
     };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // network
-  const [network, setNetwork] = useState({
-    chanId: "",
-    name: "",
-  });
-
-  useEffect(() => {
-    const providerTwo = new ethers.providers.Web3Provider(window.ethereum);
-
-    async function gettingNetworkNameChainId() {
-      const getNetWork = await providerTwo.getNetwork();
-      setNetwork(getNetWork);
-    }
-
-    FirstLoadGettingAccount();
-    gettingNetworkNameChainId();
-  }, []);
-
   return (
     <Router className="App">
       <Routes>
-        <Route path="/" element={<div>home</div>} />
+        <Route
+          path="/"
+          element={
+            <Main network={network} account={account} getAccount={getAccount} />
+          }
+        />
         <Route path="*" element={<div>404</div>} />
       </Routes>
-      {/* eslint-disable  */}
-      <Main
-        network={network}
-        FirstLoadGettingAccount={FirstLoadGettingAccount}
-      />
-      {/* eslint-enable  */}
     </Router>
   );
 }

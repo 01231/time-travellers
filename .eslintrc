@@ -33,6 +33,7 @@
         "react/prop-types": "off",
         "react/no-unescaped-entities": "off",
         "react/jsx-props-no-spreading": "off",
+        "react/jsx-no-bind": [true, { "allowFunctions": true }],
         "import/no-extraneous-dependencies": [
           "error",
           {
