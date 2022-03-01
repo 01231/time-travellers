@@ -2,7 +2,6 @@ import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import Main from "./Components/Main";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   const [account, setAccount] = useState("");

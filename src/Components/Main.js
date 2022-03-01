@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "@mui/material";
 
 function Main({ account, network, getAccount }) {
   return (
@@ -7,13 +8,10 @@ function Main({ account, network, getAccount }) {
       <div>
         {network.name}: {network.chainId}
       </div>
-      <button
-        type="button"
-        className="btn-danger"
-        onClick={(e) => getAccount(e)}
-      >
+
+      <Button variant="contained" onClick={getAccount}>
         Log in with Metamask
-      </button>
+      </Button>
     </div>
   );
 }
