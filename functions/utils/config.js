@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 exports.TWITTER_BEARER_TOKEN =
   process.env.NODE_ENV === "development"
     ? process.env.TWITTER_BEARER_TOKEN_DEV
@@ -14,3 +16,7 @@ exports.TWEET_SETTINGS = {
   TWEET_HIDE_THREAD: true,
   TWEET_HIDE_CARD: false,
 };
+
+exports.PRIMARY_PRIVATE_KEY = process.env.PRIMARY_PRIVATE_KEY;
+
+exports.ALCHEMY_API_KEY_RINKEBY = process.env.ALCHEMY_API_KEY_RINKEBY;
