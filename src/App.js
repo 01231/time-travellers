@@ -7,7 +7,7 @@ import Main from "./Components/Main.js";
 
 function App() {
   const [account, setAccount] = useState("");
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  //const provider = new ethers.providers.Web3Provider(window.ethereum);
 
   // side loaded
   async function FirstLoadGettingAccount() {
@@ -18,11 +18,12 @@ function App() {
       });
       setAccount(accounts[0]);
     } else {
+      // eslint-disable-next-line
       window.alert("Install Metamask!");
     }
   }
 
-  function handleChainChanged(_chainId) {
+  function handleChainChanged() {
     // We recommend reloading the page, unless you must do otherwise
     window.location.reload();
   }
@@ -39,7 +40,6 @@ function App() {
   function handleAccountsChanged(accounts) {
     if (accounts.length === 0) {
       // MetaMask is locked or the user has not connected any accounts
-      console.log("Please connect to MetaMask.");
     } else if (accounts[0] !== account) {
       setAccount(accounts[0]);
       window.location.reload();
@@ -78,7 +78,10 @@ function App() {
         <Route path="*" element={<div>404</div>} />
       </Routes>
       {/* eslint-disable-next-line */}
-      <Main FirstLoadGettingAccount={FirstLoadGettingAccount} />
+      <Main
+        network={network}
+        FirstLoadGettingAccount={FirstLoadGettingAccount}
+      />
     </Router>
   );
 }
