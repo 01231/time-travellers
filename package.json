@@ -43,18 +43,6 @@
     "solidity-coverage": "^0.7.18",
     "source-map-explorer": "^2.5.2"
   },
-  "eslintConfig": {
-    "rules": {
-      "no-use-before-define": [
-        "error",
-        {
-          "functions": false,
-          "classes": false,
-          "variables": false
-        }
-      ]
-    }
-  },
   "scripts": {
     "analyze": "npm run build && source-map-explorer 'build/static/js/*.js'",
     "dev": "react-scripts start",
