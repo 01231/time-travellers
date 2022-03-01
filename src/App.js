@@ -79,6 +79,7 @@ function App() {
       </Routes>
       {/* eslint-disable  */}
       <Main
+        account={account}
         network={network}
         FirstLoadGettingAccount={FirstLoadGettingAccount}
       />
