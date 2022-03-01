@@ -1,16 +1,16 @@
 import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
-import { create as ipfsHttpClient } from "ipfs-http-client";
+// import { create as ipfsHttpClient } from "ipfs-http-client";
 import Main from "./Components/Main";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
-  const client = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0");
-  const [fileURL, setFileURL] = useState(null);
-  const [formInput, setFormInput] = useState({ name: "", description: "" });
+  // const client = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0");
+  // const [fileURL, setFileURL] = useState(null);
+  // const [formInput, setFormInput] = useState({ name: "", description: "" });
 
-  async function handleUrlChange(e) {
+  /* async function handleUrlChange(e) {
     const file = e.target.files[0];
 
     try {
@@ -18,7 +18,8 @@ function App() {
         file
         /* , {
                 progress: (prog) => console.log(`received ${prog}`)
-            } */
+            }  */
+  /*
       );
       // added is an object containing the path(hash), CID, and the size of the file
       const url = `https://ipfs.infura.io/ipfs/${added.path}`;
@@ -50,14 +51,15 @@ function App() {
       // eslint-disable-next-line
       console.log("Error uploading File:", error);
     }
-  }
-  function changeFormInputDescription(e) {
+  } */
+  /*
+   function changeFormInputDescription(e) {
     setFormInput({ ...formInput, description: e.target.value });
   }
   function changeFormInputName(e) {
     setFormInput({ ...formInput, name: e.target.value });
   }
-
+*/
   const [account, setAccount] = useState("");
   const [network, setNetwork] = useState({});
 
@@ -122,19 +124,14 @@ function App() {
         <Route
           path="/"
           element={
-            <Main
-              fileURL={fileURL}
+            <Main network={network} account={account} getAccount={getAccount} />
+          }
+        />
+        {/* fileURL={fileURL}
               UploadJson={UploadJson}
               changeFormInputName={changeFormInputName}
               changeFormInputDescription={changeFormInputDescription}
-              handleUrlChange={handleUrlChange}
-              network={network}
-              account={account}
-              getAccount={getAccount}
-            />
-          }
-        />
-
+              handleUrlChange={handleUrlChange} */}
         <Route path="*" element={<div>404</div>} />
       </Routes>
     </Router>

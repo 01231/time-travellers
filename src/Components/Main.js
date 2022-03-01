@@ -24,7 +24,7 @@ function Main({
         Log in with Metamask
       </button>
 
-      <div
+      {/*  <div
         className="row d-flex justify-content-around"
         style={{ paddingTop: "300px", height: "65vh" }}
       >
@@ -98,7 +98,7 @@ function Main({
         )}
 
         <br />
-      </div>
+      </div> */}
     </div>
   );
 }
