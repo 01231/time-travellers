@@ -11,6 +11,7 @@
     "@openzeppelin/contracts": "^4.5.0",
     "@snapshot-labs/snapshot.js": "^0.3.54",
     "chrome-aws-lambda": "^10.1.0",
+    "cross-env": "^7.0.3",
     "dotenv": "^10.0.0",
     "ethers": "^5.5.4",
     "form-data": "^4.0.0",
@@ -51,7 +52,7 @@
   "scripts": {
     "analyze": "npm run build && source-map-explorer 'build/static/js/*.js'",
     "dev": "react-scripts start",
-    "start": "netlify dev --port 5000",
+    "start": "cross-env NODE_ENV=development netlify dev --port 5000",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "lint": "eslint '**' --no-error-on-unmatched-pattern && npm run solhint",
