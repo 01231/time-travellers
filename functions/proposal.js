@@ -1,5 +1,3 @@
-require("dotenv").config();
-
 const { schedule } = require("@netlify/functions");
 const snapshot = require("@snapshot-labs/snapshot.js");
 const { ethers } = require("ethers");
