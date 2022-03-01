@@ -6,7 +6,7 @@ require("hardhat-gas-reporter");
 require("solidity-coverage");
 
 const {
-  POLYGON_SCAN,
+  ETHER_SCAN,
   REPORT_GAS,
   PRIMARY_PRIVATE_KEY,
   COINMARKETCAP_API_KEY,
@@ -23,12 +23,12 @@ module.exports = {
   defaultNetwork: "localhost",
   networks: {
     hardhat: {
-      chainId: 1337,
+      chainId: 1337, // default is 31337: https://hardhat.org/metamask-issue.html
     },
     localhost: {
       // used for stand-alone hardhat network
-      chainId: 31337, // default is 31337: https://hardhat.org/metamask-issue.html
-      /* },
+      chainId: 31337,
+    },
     rinkeby: {
       chainId: 4,
       url: `https://eth-rinkeby.alchemyapi.io/v2/${ALCHEMY_API_KEY_RINKEBY}`,
@@ -41,8 +41,6 @@ module.exports = {
     coinmarketcap: COINMARKETCAP_API_KEY,
   },
   etherscan: {
-    apiKey: POLYGON_SCAN,
-  },*/
-    },
+    apiKey: ETHER_SCAN,
   },
 };
