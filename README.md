@@ -47,3 +47,15 @@
 
 - host site on IPFS
 - use web3react to connect to metamask
+
+## Future
+
+### Dedicated Pinata gateway
+
+- greater speed
+- increased rate limits
+
+### ENS Domain
+
+- Receive funds on own domain
+- Stop using test mode in snapshot
