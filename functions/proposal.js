@@ -1,9 +1,12 @@
 const { schedule } = require("@netlify/functions");
+const fetch = require("node-fetch");
 const snapshot = require("@snapshot-labs/snapshot.js");
 const { ethers } = require("ethers");
 const {
   PRIMARY_PRIVATE_KEY,
   ALCHEMY_API_KEY_RINKEBY,
+  PINATA_API_KEY,
+  PINATA_API_SECRET,
 } = require("./utils/config");
 
 const formatDate = (date) => Math.round(date / 1e3);
@@ -77,7 +80,68 @@ const plugins = JSON.stringify({
   },
 });
 
-const createProposal = async () => {
+const getDates = () => {
+  let start = new Date();
+  start.setDate(start.getDate() - 1);
+  start.setUTCHours(0, 0, 0, 0);
+  start = start.toISOString();
+
+  let end = new Date();
+  end.setDate(end.getDate() - 1);
+  end.setUTCHours(23, 59, 59, 999);
+  end = end.toISOString();
+
+  let today = new Date();
+  today.setDate(today.getDate() - 1);
+  const month = today.getUTCMonth() + 1; // months from 1-12
+  const day = today.getUTCDate();
+  const year = today.getUTCFullYear();
+  today = `${year}/${month}/${day}`;
+
+  return { start, end, today };
+};
+
+const getProposedTweets = async () => {
+  const dates = getDates();
+  const { start, end, today } = dates;
+  // allow only tweets that were created the day before TODO: filter for env?
+  const metadataFilter = `&metadata[keyvalues]={"date":{"value":"${start}","secondValue":"${end}","op":"between"}}`;
+
+  return fetch(
+    // fetch pinned tweets that were pinned and created yesterday
+    `https://api.pinata.cloud/data/pinList?status=pinned&pinStart=${start}&pinEnd=${end}${metadataFilter}`,
+    {
+      method: "GET",
+      headers: {
+        pinata_api_key: PINATA_API_KEY,
+        pinata_secret_api_key: PINATA_API_SECRET,
+      },
+    }
+  )
+    .then(async (res) => res.json())
+    .then((json) => {
+      let markdown = "> Which Tweet represents today the best?";
+      const { rows } = json;
+      const choices = [];
+      const title = `Voting for ${today}`;
+
+      for (let i = 0; i < rows.length; i++) {
+        const { ipfs_pin_hash: pinHash, metadata } = rows[i];
+        const { keyvalues: keyValues } = metadata;
+
+        markdown += `\n\n## Tweet ${i + 1}\n\n[![${
+          keyValues.description
+        }](https://gateway.pinata.cloud/ipfs/${pinHash})](${
+          keyValues.twitterURL
+        })`;
+        choices.push(`Tweet ${i + 1}`);
+      }
+      return [markdown, choices, title];
+    })
+    .catch((err) => err);
+};
+
+const createProposal = async (markdown, choices, title) => {
   const hub = "https://hub.snapshot.org"; // or https://testnet.snapshot.org for testnet
   const client = new snapshot.Client712(hub);
 
@@ -90,32 +154,34 @@ const createProposal = async () => {
 
   const blockNumber = (await provider.getBlock()).number;
 
-  const receipt = await client.proposal(signer, signer.address, {
-    space: "3.spaceshot.eth",
-    type: "quadratic",
-    title: "Test proposal using Snapshot.js",
-    body: "haaaaallllllooooo",
-    choices: ["Alice", "Bob", "Carol"],
-    start: formatDate(Date.now()),
-    end: formatDate(Date.now() + 1000 * 60 * 60), // + 60mins
-    snapshot: blockNumber, // TODO: how far back do we want to go?
-    network: "4",
-    strategies: strategies,
-    plugins: plugins,
-    metadata: JSON.stringify({}),
-  });
-
-  console.log("receipt", receipt);
+  try {
+    await client.proposal(signer, signer.address, {
+      space: "3.spaceshot.eth",
+      type: "quadratic",
+      title: title,
+      body: markdown,
+      choices: choices,
+      start: formatDate(Date.now()),
+      end: formatDate(Date.now() + 1000 * 60 * 60), // + 60mins
+      snapshot: blockNumber, // TODO: how far back do we want to go?
+      network: "4", // TODO: dynamic?
+      strategies: strategies,
+      plugins: plugins,
+      metadata: JSON.stringify({}),
+    });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
-const handler = async (event, context) => {
-  console.log("Received event:", event);
+const handler = async () => {
+  const dynamicData = await getProposedTweets();
 
-  await createProposal();
+  await createProposal(...dynamicData);
 
   return {
     statusCode: 200,
   };
 };
 
-module.exports.handler = schedule("@hourly", handler);
+module.exports.handler = schedule("@daily", handler);
