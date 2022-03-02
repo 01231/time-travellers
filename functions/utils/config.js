@@ -3,7 +3,7 @@ exports.TWITTER_BEARER_TOKEN = process.env.TWITTER_BEARER_TOKEN;
 const localPathToChrome =
   process.platform === "darwin"
     ? "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-    : "Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe";
+    : "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe";
 
 exports.CHROME_EXECUTABLE_PATH =
   process.env.NODE_ENV === "development" ? localPathToChrome : null;
