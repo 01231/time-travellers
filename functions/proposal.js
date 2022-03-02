@@ -91,19 +91,20 @@ const getDates = () => {
   end.setUTCHours(23, 59, 59, 999);
   end = end.toISOString();
 
-  let today = new Date();
-  today.setDate(today.getDate() - 1);
-  const month = today.getUTCMonth() + 1; // months from 1-12
-  const day = today.getUTCDate();
-  const year = today.getUTCFullYear();
-  today = `${year}/${month}/${day}`;
+  let yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const month = yesterday.getUTCMonth() + 1; // months from 1-12
+  const day = yesterday.getUTCDate();
+  const year = yesterday.getUTCFullYear();
+  yesterday = `${year}/${month}/${day}`;
 
-  return { start, end, today };
+  return { start, end, yesterday };
 };
 
 const getProposedTweets = async () => {
   const dates = getDates();
-  const { start, end, today } = dates;
+  const { start, end, yesterday } = dates;
+
   // allow only tweets that were created the day before TODO: filter for env?
   const metadataFilter = `&metadata[keyvalues]={"date":{"value":"${start}","secondValue":"${end}","op":"between"}}`;
 
@@ -120,10 +121,10 @@ const getProposedTweets = async () => {
   )
     .then(async (res) => res.json())
     .then((json) => {
-      let markdown = "> Which Tweet represents today the best?";
+      let markdown = "> Which Tweet represents yesterday the best?";
       const { rows } = json;
       const choices = [];
-      const title = `Voting for ${today}`;
+      const title = `Voting for ${yesterday}`;
 
       for (let i = 0; i < rows.length; i++) {
         const { ipfs_pin_hash: pinHash, metadata } = rows[i];
@@ -155,6 +156,9 @@ const createProposal = async (markdown, choices, title) => {
   const blockNumber = (await provider.getBlock()).number;
 
   try {
+    if (choices.length <= 0) {
+      throw new Error("No recommendations have been proposed");
+    }
     await client.proposal(signer, signer.address, {
       space: "3.spaceshot.eth",
       type: "quadratic",
