@@ -7,6 +7,7 @@ const localPathToChrome =
 
 exports.CHROME_EXECUTABLE_PATH =
   process.env.NODE_ENV === "development" ? localPathToChrome : null;
+
 exports.TWEET_SETTINGS = {
   TWEET_WIDTH: 1000,
   TWEET_PADDING: 25,
@@ -14,6 +15,11 @@ exports.TWEET_SETTINGS = {
   TWEET_HIDE_CARD: false,
 };
 
+exports.ENV = process.env.NODE_ENV || "production";
+
 exports.PRIMARY_PRIVATE_KEY = process.env.PRIMARY_PRIVATE_KEY;
 
 exports.ALCHEMY_API_KEY_RINKEBY = process.env.ALCHEMY_API_KEY_RINKEBY;
+
+exports.PINATA_API_KEY = process.env.PINATA_API_KEY;
+exports.PINATA_API_SECRET = process.env.PINATA_API_SECRET;
