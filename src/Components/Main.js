@@ -115,6 +115,7 @@ function Main({ account, network, getAccount }) {
         tweetURL: state.tweetURL,
         metadata: state.nftMetadata,
         chainId: network.chainId,
+        address: account,
       }),
     })
       .then(async (res) => {

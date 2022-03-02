@@ -5,13 +5,54 @@ const { PINATA_API_KEY, PINATA_API_SECRET, ENV } = require("./utils/config");
 
 const { getTweetId } = require("./utils/twitter");
 
+const getDates = () => {
+  let start = new Date();
+  start.setDate(start.getDate());
+  start.setUTCHours(0, 0, 0, 0);
+  start = start.toISOString();
+
+  let end = new Date();
+  end.setDate(end.getDate());
+  end.setUTCHours(23, 59, 59, 999);
+  end = end.toISOString();
+
+  return { start, end };
+};
+
+const getCurrentChoiceNr = async () => {
+  const dates = getDates();
+  const { start, end } = dates;
+
+  // allow only tweets that were created today TODO: filter for env?
+  const metadataFilter = `&metadata[keyvalues]={"date":{"value":"${start}","secondValue":"${end}","op":"between"}}`;
+
+  return fetch(
+    // fetch pinned tweets that were pinned and created today
+    `https://api.pinata.cloud/data/pinList?status=pinned&pinStart=${start}&pinEnd=${end}${metadataFilter}`,
+    {
+      method: "GET",
+      headers: {
+        pinata_api_key: PINATA_API_KEY,
+        pinata_secret_api_key: PINATA_API_SECRET,
+      },
+    }
+  )
+    .then(async (res) => res.json())
+    .then((json) => {
+      const { rows } = json;
+      return rows.length + 1;
+    })
+    .catch((err) => err);
+};
+
 async function uploadToPinata(
   pinataContent,
   fileName,
   isJSON = false,
   tweetURL = "",
   name = "",
-  tweetCreatedAt = ""
+  tweetCreatedAt = "",
+  address = ""
 ) {
   const fd = new FormData();
   let imgBuffer;
@@ -22,6 +63,8 @@ async function uploadToPinata(
     readable = Readable.from(imgBuffer);
     fd.append("file", readable, fileName);
 
+    const choice = await getCurrentChoiceNr();
+
     fd.append(
       "pinataMetadata",
       JSON.stringify({
@@ -30,6 +73,8 @@ async function uploadToPinata(
           date: tweetCreatedAt,
           twitterURL: tweetURL,
           description: name,
+          choice: choice,
+          walletAddress: address,
         },
       })
     );
@@ -59,7 +104,9 @@ async function uploadToPinata(
 }
 
 exports.handler = async (event) => {
-  const { metadata, imageData, tweetURL, chainId } = JSON.parse(event.body);
+  const { metadata, imageData, tweetURL, chainId, address } = JSON.parse(
+    event.body
+  );
   const tweetId = getTweetId(tweetURL);
   const prefix = chainId === 1 ? "" : `${chainId}_`;
   let tokenURI;
@@ -73,7 +120,8 @@ exports.handler = async (event) => {
       false,
       tweetURL,
       metadata.name,
-      tweetCreatedAt
+      tweetCreatedAt,
+      address
     );
 
     metadata.image = ipfsImagePath;
