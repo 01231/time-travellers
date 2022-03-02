@@ -1,10 +1,18 @@
 const FormData = require("form-data");
 const fetch = require("node-fetch");
 const { Readable } = require("stream");
+const { PINATA_API_KEY, PINATA_API_SECRET, ENV } = require("./utils/config");
 
 const { getTweetId } = require("./utils/twitter");
 
-async function uploadToPinata(pinataContent, fileName, isJSON = false) {
+async function uploadToPinata(
+  pinataContent,
+  fileName,
+  isJSON = false,
+  tweetURL = "",
+  name = "",
+  tweetCreatedAt = ""
+) {
   const fd = new FormData();
   let imgBuffer;
   let readable;
@@ -13,25 +21,35 @@ async function uploadToPinata(pinataContent, fileName, isJSON = false) {
     imgBuffer = Buffer.from(pinataContent, "base64");
     readable = Readable.from(imgBuffer);
     fd.append("file", readable, fileName);
+
+    fd.append(
+      "pinataMetadata",
+      JSON.stringify({
+        keyvalues: {
+          env: ENV,
+          date: tweetCreatedAt,
+          twitterURL: tweetURL,
+          description: name,
+        },
+      })
+    );
   } else {
     fd.append("file", JSON.stringify(pinataContent), fileName);
+    fd.append(
+      "pinataMetadata",
+      JSON.stringify({
+        keyvalues: {
+          env: ENV,
+        },
+      })
+    );
   }
-
-  fd.append(
-    "pinataMetadata",
-    JSON.stringify({
-      keyvalues: {
-        // env: "dev", // TODO: how to make folders?
-        date: new Date().toISOString(),
-      },
-    })
-  );
 
   return fetch("https://api.pinata.cloud/pinning/pinFileToIPFS", {
     method: "POST",
     headers: {
-      pinata_api_key: process.env.PINATA_API_KEY,
-      pinata_secret_api_key: process.env.PINATA_API_SECRET,
+      pinata_api_key: PINATA_API_KEY,
+      pinata_secret_api_key: PINATA_API_SECRET,
     },
     body: fd,
   })
@@ -47,11 +65,15 @@ exports.handler = async (event) => {
   let tokenURI;
 
   try {
+    const tweetCreatedAt = new Date(metadata.attributes[2].value).toISOString();
     // TODO: if second fails revert first one
     const ipfsImagePath = await uploadToPinata(
       imageData,
       `${prefix}${tweetId}.png`,
-      false
+      false,
+      tweetURL,
+      metadata.name,
+      tweetCreatedAt
     );
 
     metadata.image = ipfsImagePath;
