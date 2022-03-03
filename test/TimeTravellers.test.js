@@ -3,21 +3,11 @@ const { ethers } = require("hardhat");
 const { utils, BigNumber } = require("ethers");
 
 describe("TimeTravellersNFT", function () {
+  let ttn;
   beforeEach(async function () {
     const TTN = await ethers.getContractFactory("TimeTravellersNFT");
-    const ttn = await TTN.deploy();
+    ttn = await TTN.deploy();
     await ttn.deployed();
-  });
-  before(async function () {
-    const TTN = await ethers.getContractFactory("TimeTravellersNFT");
-    const ttn = await TTN.deploy();
-    await ttn.deployed();
-  });
-  describe("NFT", function () {
-    it("Name and symbol", async function () {
-      expect(await ttn.name()).to.equal("Time-Travellers-NFT");
-      expect(await ttn.symbol()).to.equal("TTN");
-    });
   });
 
   it("Name and symbol", async function () {
@@ -26,11 +16,6 @@ describe("TimeTravellersNFT", function () {
   });
 
   it("tests for a bunch of minting", async function () {
-    // test to receive contract addresses
-    const TTN = await ethers.getContractFactory("TimeTravellersNFT");
-    const ttn = await TTN.deploy();
-    await ttn.deployed();
-
     // grabbing a few addresses
     const [owner, addr2, addr3] = await ethers.getSigners();
 
@@ -71,19 +56,18 @@ describe("TimeTravellersNFT", function () {
 });
 
 describe("TimeTravellersToken", function () {
-  it("Should show name and symbol", async function () {
+  let ttt;
+  beforeEach(async function () {
     const TTT = await ethers.getContractFactory("TimeTravellersToken");
-    const ttt = await TTT.deploy();
+    ttt = await TTT.deploy();
     await ttt.deployed();
+  });
+  it("Should show name and symbol", async function () {
     expect(await ttt.name()).to.equal("Time-Travellers-Token");
     expect(await ttt.symbol()).to.equal("TTT");
   });
 
   it("Should show balances of holders", async function () {
-    const TTT = await ethers.getContractFactory("TimeTravellersToken");
-    const ttt = await TTT.deploy();
-    await ttt.deployed();
-
     // expect(await ttt.PRICE()).to.equal(10000000000000);
 
     /*let res = await ttt.MAX_TOKEN_CAP();
