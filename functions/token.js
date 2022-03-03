@@ -111,11 +111,15 @@ exports.handler = async (event) => {
   const { metadata, imageData, tweetURL, chainId, address } = JSON.parse(
     event.body
   );
-  const tweetId = getTweetId(tweetURL);
-  const prefix = chainId === 1 ? "" : `${chainId}_`;
-  let tokenURI;
 
+  let tokenURI;
   try {
+    if (!address) {
+      throw new Error("You are not logged in to MetaMask!");
+    }
+    const tweetId = getTweetId(tweetURL);
+    const prefix = chainId === 1 ? "" : `${chainId}_`;
+
     const tweetCreatedAt = new Date(metadata.attributes[2].value).toISOString();
     // TODO: if second fails revert first one
     const ipfsImagePath = await uploadToPinata(
