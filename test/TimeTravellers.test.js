@@ -8,6 +8,11 @@ describe("TimeTravellersNFT", function () {
     const ttn = await TTN.deploy();
     await ttn.deployed();
   });
+  before(async function () {
+    const TTN = await ethers.getContractFactory("TimeTravellersNFT");
+    const ttn = await TTN.deploy();
+    await ttn.deployed();
+  });
   describe("NFT", function () {
     it("Name and symbol", async function () {
       expect(await ttn.name()).to.equal("Time-Travellers-NFT");
