@@ -10,11 +10,7 @@ import "hardhat/console.sol";
 contract TimeTravellersNFT is ERC721URIStorage, AccessControl {
     using Counters for Counters.Counter;
 
-    //string public baseURI;
-
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
-
-    bytes32 public constant URI_SETTER_ROLE = keccak256("URI_SETTER_ROLE");
 
     Counters.Counter private _tokenCounter;
 
@@ -28,11 +24,7 @@ contract TimeTravellersNFT is ERC721URIStorage, AccessControl {
         //string memory _newBaseURI
         ERC721("Time-Travellers-NFT", "TTN")
     {
-        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(MINTER_ROLE, msg.sender);
-
-        _grantRole(URI_SETTER_ROLE, msg.sender);
-        //baseURI = _newBaseURI;
     }
 
     struct Tweet {
@@ -44,11 +36,11 @@ contract TimeTravellersNFT is ERC721URIStorage, AccessControl {
     //Tweet[] public arrayOffAllTweets;
     mapping(uint16 => Tweet) public IdToTweet;
 
-    function getAllMintedTokensURI() external view returns (Tweet[] memory) {
+    function getAllMintedTokens() external view returns (Tweet[] memory) {
         uint16 currentId = uint16(_tokenCounter.current());
         Tweet[] memory returnArray = new Tweet[](currentId);
         for (uint16 i = 1; i <= currentId; i++) {
-            returnArray[i] = IdToTweet[i];
+            returnArray[i - 1] = IdToTweet[i];
         }
         return returnArray;
     }
@@ -67,19 +59,6 @@ contract TimeTravellersNFT is ERC721URIStorage, AccessControl {
         emit TokenCreated(currentId, _tokenURI, _account);
         return currentId;
     }
-
-    /*function _baseURI() internal view override returns (string memory) {
-        return baseURI;
-    }
-
-    function setBaseURI(string memory _newBaseURI)
-        external
-        onlyRole(URI_SETTER_ROLE)
-        returns (string memory)
-    {
-        return baseURI = _newBaseURI;
-    }
-    */
 
     function supportsInterface(bytes4 interfaceId)
         public
