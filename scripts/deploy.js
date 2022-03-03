@@ -24,7 +24,7 @@ async function deploy(contractName, args = []) {
 }
 
 async function main() {
-  await deploy("TimeTravellersNFT", ["ipfs://"]);
+  await deploy("TimeTravellersNFT"); //, ["ipfs://"]
   await deploy("TimeTravellersToken");
 }
 
