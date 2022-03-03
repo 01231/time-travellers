@@ -1,14 +1,26 @@
 const fetch = require("node-fetch");
-const { PINATA_API_KEY, PINATA_API_SECRET } = require("./utils/config");
+const ethers = require("ethers");
+const tweetToken = require("../src/config/contracts/TimeTravellersNFT.json");
+const addressMap = require("../src/config/contracts/map.json");
 
-const calculateWinner = (res) => {
-  const { votes } = res.data;
+const {
+  PINATA_API_KEY,
+  PINATA_API_SECRET,
+  ALCHEMY_API_KEY_RINKEBY,
+  PRIMARY_PRIVATE_KEY,
+} = require("./utils/config");
+
+const calculateWinner = (votes) => {
   const result = {};
 
   // count votes for each choice
   for (let i = 0; i < votes.length; i++) {
+    const { choice } = votes[i];
+    // get token amount of wallet at time lock
+    const votingPower = 1;
+    // const votingPower = getVotingPower(voter, blockNumber); // TODO: fetch balance at block nr
     // if value exists add one, otherwise initalize with zero
-    result[votes[i].choice] = (result[votes[i].choice] || 0) + 1;
+    result[choice] = (result[choice] || 0) + votingPower;
   }
 
   const keys = Object.keys(result);
@@ -21,7 +33,7 @@ const calculateWinner = (res) => {
       winner = key;
     }
   });
-  console.log(result, result[winner]);
+
   return winner;
 };
 
@@ -58,13 +70,15 @@ const getVotes = (proposalHash) => {
       }),
     })
       .then((res) => res.json())
-      .then((data) => {
-        if (!data.votes) {
+      .then((json) => {
+        const { votes } = json.data;
+        if (votes.length < 0) {
           throw new Error("This proposal has not votes");
+        } else {
+          return votes;
         }
       });
   } catch (err) {
-    console.log("Ups, something went wrong:", err); // TODO: remove
     throw new Error(err.message);
   }
 };
@@ -104,14 +118,39 @@ const getWinnerAddress = (winnerChoice) => {
     )
       .then(async (res) => res.json())
       .then((json) => {
+        console.log("pinata", json);
         const { rows } = json;
-        const { metadata } = rows[0];
+        if (rows.length <= 0) {
+          throw new Error("No Tweets have been proposed!");
+        }
+        const { ipfs_pin_hash: tokenURI } = rows[0];
+        const { metadata } = rows[1];
         const { keyvalues: keyValues } = metadata;
-        return keyValues.walletAddress;
+
+        return { tokenURI: tokenURI, winnerAddress: keyValues.walletAddress };
       });
   } catch (err) {
     throw new Error(err.message);
   }
+};
+const mintTweet = async (winnerAddress, tokenURI) => {
+  console.log("mintdata", winnerAddress, tokenURI);
+
+  const provider = new ethers.providers.AlchemyProvider(
+    "rinkeby",
+    ALCHEMY_API_KEY_RINKEBY
+  );
+
+  const wallet = new ethers.Wallet(PRIMARY_PRIVATE_KEY, provider);
+  const signer = wallet.connect(provider);
+  const tweetTokenAddress = addressMap["4"].TimeTravellersNFT;
+  const TimeTravellersNFT = new ethers.Contract(
+    tweetTokenAddress,
+    tweetToken.abi,
+    signer
+  );
+
+  await TimeTravellersNFT.mintTweet(winnerAddress, tokenURI);
 };
 
 exports.handler = async (event) => {
@@ -119,16 +158,16 @@ exports.handler = async (event) => {
   console.log(id, proposalEvent, space, event);
   try {
     if (proposalEvent === "proposal/end" && space === "3.spaceshot.eth") {
-      // "proposal/QmZ21uS8tVucpaNq2LZCbZUmHhYYXunC1ZS2gPDNWwPWD9" -> "QmZ21uS8tVucpaNq2LZCbZUmHhYYXunC1ZS2gPDNWwPWD9"
+      // "proposal/0xdc7b2ea2aa18cc9176807e6e25dbf071db111669f7dc4ce4de5d2a7775bf8773" ->
+      // "0xdc7b2ea2aa18cc9176807e6e25dbf071db111669f7dc4ce4de5d2a7775bf8773"
       const proposalHash = id.split("/")[1];
-      // const proposalHash = "QmT8RCrHL7Hrvf37P2r22PkfWeV98wY7H6UxTR7XqTZfdA";
+      // const proposalHash =
+      //   "0x6234e158a82799a8ae459c21f5dc6f436ec24b06bf5030079706c5244e41a34b";
 
-      const res = await getVotes(proposalHash);
-      const winnerChoice = calculateWinner(res);
-      const winnerAddress = await getWinnerAddress(winnerChoice);
-
-      console.log(winnerAddress);
-      // TODO: mint to winnerAddress
+      const votes = await getVotes(proposalHash);
+      const winnerChoice = calculateWinner(votes);
+      const mintData = await getWinnerAddress(winnerChoice);
+      await mintTweet(...mintData);
     }
 
     return {
