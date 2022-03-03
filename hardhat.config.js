@@ -6,7 +6,7 @@ require("hardhat-gas-reporter");
 require("solidity-coverage");
 
 const {
-  ETHER_SCAN,
+  ETHER_SCAN_API_KEY,
   REPORT_GAS,
   PRIMARY_PRIVATE_KEY,
   COINMARKETCAP_API_KEY,
@@ -27,7 +27,7 @@ module.exports = {
     },
     localhost: {
       // used for stand-alone hardhat network
-      chainId: 31337,
+      chainId: 1337,
     },
     rinkeby: {
       chainId: 4,
@@ -41,6 +41,6 @@ module.exports = {
     coinmarketcap: COINMARKETCAP_API_KEY,
   },
   etherscan: {
-    apiKey: ETHER_SCAN,
+    apiKey: ETHER_SCAN_API_KEY,
   },
 };
