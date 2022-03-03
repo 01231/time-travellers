@@ -10,6 +10,10 @@ const {
   ENV,
 } = require("./utils/config");
 
+const addressMap = require("../src/config/contracts/map.json");
+
+const TOKEN_CONTRACT_ADDRESS = addressMap["4"].TimeTravellersToken;
+
 const formatDate = (date) => Math.round(date / 1e3);
 
 const strategies = JSON.stringify([
@@ -17,12 +21,13 @@ const strategies = JSON.stringify([
     name: "erc20-balance-of",
     params: {
       symbol: "TTT",
-      address: "0x6BbE04E16056bd9fC6f6fB7ACbbb43c389e0A1A6",
+      address: TOKEN_CONTRACT_ADDRESS,
       decimals: 18,
     },
   },
 ]);
 
+// TODO: how to make plugin dynamic?
 const plugins = JSON.stringify({
   safeSnap: {
     safes: [
