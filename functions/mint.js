@@ -171,21 +171,21 @@ const mintTweet = async (winnerAddress, tokenURI) => {
 };
 
 exports.handler = async (event) => {
-  // const { id, event: proposalEvent, space } = JSON.parse(event.body);
-  // console.log(id, proposalEvent, space, event);
+  const { id, event: proposalEvent, space } = JSON.parse(event.body);
+  console.log(id, proposalEvent, space, event);
   try {
-    // if (proposalEvent === "proposal/end" && space === "3.spaceshot.eth") {
-    // "proposal/0xdc7b2ea2aa18cc9176807e6e25dbf071db111669f7dc4ce4de5d2a7775bf8773" ->
-    // "0xdc7b2ea2aa18cc9176807e6e25dbf071db111669f7dc4ce4de5d2a7775bf8773"
-    // const proposalHash = id.split("/")[1];
-    const proposalHash =
-      "0x6234e158a82799a8ae459c21f5dc6f436ec24b06bf5030079706c5244e41a34b";
+    if (proposalEvent === "proposal/end" && space === "3.spaceshot.eth") {
+      // "proposal/0xdc7b2ea2aa18cc9176807e6e25dbf071db111669f7dc4ce4de5d2a7775bf8773" ->
+      // "0xdc7b2ea2aa18cc9176807e6e25dbf071db111669f7dc4ce4de5d2a7775bf8773"
+      const proposalHash = id.split("/")[1];
+      // const proposalHash =
+      //   "0x6234e158a82799a8ae459c21f5dc6f436ec24b06bf5030079706c5244e41a34b";
 
-    const votes = await getVotes(proposalHash);
-    const winnerChoice = calculateWinner(votes);
-    const mintData = await getWinnerAddress(winnerChoice);
-    await mintTweet(...mintData);
-    // }
+      const votes = await getVotes(proposalHash);
+      const winnerChoice = calculateWinner(votes);
+      const mintData = await getWinnerAddress(winnerChoice);
+      await mintTweet(...mintData);
+    }
 
     return {
       statusCode: 200,
