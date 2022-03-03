@@ -3,7 +3,7 @@ import { Button, Container, Card, CardMedia } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import ThemeToggle from "./ThemeToggle";
 import URLInput from "./URLInput";
-import Calendar from "./Components/Calendar";
+import Calendar from "./Calendar";
 
 import { BASE_URL, FUNCTIONS_PREFIX } from "../config/globals";
 
