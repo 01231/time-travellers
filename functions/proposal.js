@@ -7,6 +7,7 @@ const {
   ALCHEMY_API_KEY_RINKEBY,
   PINATA_API_KEY,
   PINATA_API_SECRET,
+  ENV,
 } = require("./utils/config");
 
 const formatDate = (date) => Math.round(date / 1e3);
@@ -105,8 +106,8 @@ const getProposedTweets = async () => {
   const dates = getDates();
   const { start, end, yesterday } = dates;
 
-  // allow only tweets that were created the day before TODO: filter for env?
-  const metadataFilter = `&metadata[keyvalues]={"date":{"value":"${start}","secondValue":"${end}","op":"between"},"type":{"value":"tweet","op":"eq"}}`;
+  // allow only tweets that were created the day before
+  const metadataFilter = `&metadata[keyvalues]={"date":{"value":"${start}","secondValue":"${end}","op":"between"},"type":{"value":"tweet","op":"eq"},"env":{"value":"${ENV}","op":"eq"}}`;
 
   return fetch(
     // fetch pinned tweets that were pinned and created yesterday
@@ -121,26 +122,29 @@ const getProposedTweets = async () => {
   )
     .then(async (res) => res.json())
     .then((json) => {
-      console.log("should only show pngs", json);
       let markdown = "> Which Tweet represents yesterday the best?";
       const { rows } = json;
       const choices = [];
       const title = `Voting for ${yesterday}`;
 
-      for (let i = 0; i < rows.length; i++) {
-        const { ipfs_pin_hash: pinHash, metadata } = rows[i];
+      // start from the last array element, which is the first proposed tweet
+      for (let i = rows.length; i > 0; i--) {
+        const { ipfs_pin_hash: pinHash, metadata } = rows[i - 1];
         const { keyvalues: keyValues } = metadata;
+        const { choice, description, twitterURL } = keyValues;
 
-        markdown += `\n\n## Tweet ${i + 1}\n\n[![${
-          keyValues.description
-        }](https://gateway.pinata.cloud/ipfs/${pinHash})](${
-          keyValues.twitterURL
-        })`;
-        choices.push(`Tweet ${i + 1}`);
+        if (choice !== rows.length - i + 1) {
+          throw new Error(
+            `Ups something went wrong while creating the proposal! choice: ${choice} element: ${
+              rows.length - i + 1
+            }`
+          );
+        }
+        markdown += `\n\n## Tweet ${choice}\n\n[![${description}](https://gateway.pinata.cloud/ipfs/${pinHash})](${twitterURL})`;
+        choices.push(`Tweet ${choice}`);
       }
       return [markdown, choices, title];
-    })
-    .catch((err) => err);
+    });
 };
 
 const createProposal = async (markdown, choices, title) => {
@@ -167,7 +171,7 @@ const createProposal = async (markdown, choices, title) => {
       body: markdown,
       choices: choices,
       start: formatDate(Date.now()),
-      end: formatDate(Date.now() + 1000 * 60), // + 60mins
+      end: formatDate(Date.now() + 1000 * 60 * 30), // + 30mins // TODO: make one day or 23 h
       snapshot: blockNumber, // TODO: how far back do we want to go?
       network: "4", // TODO: dynamic?
       strategies: strategies,
@@ -180,13 +184,21 @@ const createProposal = async (markdown, choices, title) => {
 };
 
 const handler = async () => {
-  const dynamicData = await getProposedTweets();
+  try {
+    const dynamicData = await getProposedTweets();
+    await createProposal(...dynamicData);
 
-  await createProposal(...dynamicData);
-
-  return {
-    statusCode: 200,
-  };
+    return {
+      statusCode: 200,
+    };
+  } catch (err) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({
+        error: err.message,
+      }),
+    };
+  }
 };
 
 module.exports.handler = schedule("@daily", handler);
