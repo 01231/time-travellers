@@ -3,6 +3,7 @@ import { Button, Container, Card, CardMedia } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import ThemeToggle from "./ThemeToggle";
 import URLInput from "./URLInput";
+import Calendar from "./Calendar";
 
 import { BASE_URL, FUNCTIONS_PREFIX } from "../config/globals";
 
@@ -183,6 +184,7 @@ function Main({ account, network, getAccount }) {
           <Button onClick={handleMint}>Upload to IPFS</Button>
         </>
       )}
+      <Calendar />
     </Container>
   );
 }
