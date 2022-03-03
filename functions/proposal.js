@@ -7,7 +7,12 @@ const {
   ALCHEMY_API_KEY_RINKEBY,
   PINATA_API_KEY,
   PINATA_API_SECRET,
+  ENV,
 } = require("./utils/config");
+
+const addressMap = require("../src/config/contracts/map.json");
+
+const TOKEN_CONTRACT_ADDRESS = addressMap["4"].TimeTravellersToken;
 
 const formatDate = (date) => Math.round(date / 1e3);
 
@@ -16,12 +21,13 @@ const strategies = JSON.stringify([
     name: "erc20-balance-of",
     params: {
       symbol: "TTT",
-      address: "0x6BbE04E16056bd9fC6f6fB7ACbbb43c389e0A1A6",
+      address: TOKEN_CONTRACT_ADDRESS,
       decimals: 18,
     },
   },
 ]);
 
+// TODO: how to make plugin dynamic?
 const plugins = JSON.stringify({
   safeSnap: {
     safes: [
@@ -105,8 +111,8 @@ const getProposedTweets = async () => {
   const dates = getDates();
   const { start, end, yesterday } = dates;
 
-  // allow only tweets that were created the day before TODO: filter for env?
-  const metadataFilter = `&metadata[keyvalues]={"date":{"value":"${start}","secondValue":"${end}","op":"between"}}`;
+  // allow only tweets that were created the day before
+  const metadataFilter = `&metadata[keyvalues]={"date":{"value":"${start}","secondValue":"${end}","op":"between"},"type":{"value":"tweet","op":"eq"},"env":{"value":"${ENV}","op":"eq"}}`;
 
   return fetch(
     // fetch pinned tweets that were pinned and created yesterday
@@ -126,20 +132,24 @@ const getProposedTweets = async () => {
       const choices = [];
       const title = `Voting for ${yesterday}`;
 
-      for (let i = 0; i < rows.length; i++) {
-        const { ipfs_pin_hash: pinHash, metadata } = rows[i];
+      // start from the last array element, which is the first proposed tweet
+      for (let i = rows.length; i > 0; i--) {
+        const { ipfs_pin_hash: pinHash, metadata } = rows[i - 1];
         const { keyvalues: keyValues } = metadata;
+        const { choice, description, twitterURL } = keyValues;
 
-        markdown += `\n\n## Tweet ${i + 1}\n\n[![${
-          keyValues.description
-        }](https://gateway.pinata.cloud/ipfs/${pinHash})](${
-          keyValues.twitterURL
-        })`;
-        choices.push(`Tweet ${i + 1}`);
+        if (choice !== rows.length - i + 1) {
+          throw new Error(
+            `Ups something went wrong while creating the proposal! choice: ${choice} element: ${
+              rows.length - i + 1
+            }`
+          );
+        }
+        markdown += `\n\n## Tweet ${choice}\n\n[![${description}](https://gateway.pinata.cloud/ipfs/${pinHash})](${twitterURL})`;
+        choices.push(`Tweet ${choice}`);
       }
       return [markdown, choices, title];
-    })
-    .catch((err) => err);
+    });
 };
 
 const createProposal = async (markdown, choices, title) => {
@@ -161,12 +171,12 @@ const createProposal = async (markdown, choices, title) => {
     }
     await client.proposal(signer, signer.address, {
       space: "3.spaceshot.eth",
-      type: "quadratic",
+      type: "single-choice",
       title: title,
       body: markdown,
       choices: choices,
       start: formatDate(Date.now()),
-      end: formatDate(Date.now() + 1000 * 60 * 60), // + 60mins
+      end: formatDate(Date.now() + 1000 * 60 * 30), // + 30mins // TODO: make one day or 23 h
       snapshot: blockNumber, // TODO: how far back do we want to go?
       network: "4", // TODO: dynamic?
       strategies: strategies,
@@ -174,18 +184,26 @@ const createProposal = async (markdown, choices, title) => {
       metadata: JSON.stringify({}),
     });
   } catch (err) {
-    console.log(err);
+    throw new Error(err.message);
   }
 };
 
 const handler = async () => {
-  const dynamicData = await getProposedTweets();
+  try {
+    const dynamicData = await getProposedTweets();
+    await createProposal(...dynamicData);
 
-  await createProposal(...dynamicData);
-
-  return {
-    statusCode: 200,
-  };
+    return {
+      statusCode: 200,
+    };
+  } catch (err) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({
+        error: err.message,
+      }),
+    };
+  }
 };
 
 module.exports.handler = schedule("@daily", handler);

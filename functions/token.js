@@ -24,7 +24,7 @@ const getCurrentChoiceNr = async () => {
   const { start, end } = dates;
 
   // allow only tweets that were created today TODO: filter for env?
-  const metadataFilter = `&metadata[keyvalues]={"date":{"value":"${start}","secondValue":"${end}","op":"between"}}`;
+  const metadataFilter = `&metadata[keyvalues]={"date":{"value":"${start}","secondValue":"${end}","op":"between"},"type":{"value":"tweet","op":"eq"}}`;
 
   return fetch(
     // fetch pinned tweets that were pinned and created today
@@ -58,12 +58,12 @@ async function uploadToPinata(
   let imgBuffer;
   let readable;
 
+  const choice = await getCurrentChoiceNr();
+
   if (!isJSON) {
     imgBuffer = Buffer.from(pinataContent, "base64");
     readable = Readable.from(imgBuffer);
     fd.append("file", readable, fileName);
-
-    const choice = await getCurrentChoiceNr();
 
     fd.append(
       "pinataMetadata",
@@ -75,6 +75,7 @@ async function uploadToPinata(
           description: name,
           choice: choice,
           walletAddress: address,
+          type: "tweet",
         },
       })
     );
@@ -85,6 +86,9 @@ async function uploadToPinata(
       JSON.stringify({
         keyvalues: {
           env: ENV,
+          date: tweetCreatedAt,
+          type: "metadata",
+          choice: choice,
         },
       })
     );
