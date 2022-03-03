@@ -1,6 +1,9 @@
 import { createTheme } from "@mui/material";
 
 const basicTheme = createTheme({
+  palette: {
+    mode: "dark",
+  },
   typography: {
     fontFamily: [
       "Roboto",
@@ -19,8 +22,8 @@ const basicTheme = createTheme({
         //   height: "100%",
         // },
         body: {
-          // backgroundColor: "rgba(255, 255, 255, 0.932)",
-          // color: "rgba(0, 0, 0, 0.87)",
+          // color: "rgba(255, 255, 255, 0.932)",
+          // backgroundColor: "rgba(0, 0, 0, 0.87)",
           // paddingTop: 16,
           // paddingBottom: 16,
           minWidth: 320,
