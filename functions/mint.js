@@ -8,6 +8,7 @@ const {
   PINATA_API_SECRET,
   ALCHEMY_API_KEY_RINKEBY,
   PRIMARY_PRIVATE_KEY,
+  ENV,
 } = require("./utils/config");
 
 const calculateWinner = (votes) => {
@@ -101,8 +102,8 @@ const getWinnerAddress = (winnerChoice) => {
   const dates = getDates();
   const { start, end } = dates;
 
-  // search the winning tweet from two days before TODO: filter for env?
-  const metadataFilter = `&metadata[keyvalues]={"date":{"value":"${start}","secondValue":"${end}","op":"between"},"choice":{"value":"${winnerChoice}","op":"eq"}}`;
+  // search the winning tweet from two days before
+  const metadataFilter = `&metadata[keyvalues]={"date":{"value":"${start}","secondValue":"${end}","op":"between"},"choice":{"value":"${winnerChoice}","op":"eq"},"env":{"value":"${ENV}","op":"eq"}}`;
 
   try {
     return fetch(
