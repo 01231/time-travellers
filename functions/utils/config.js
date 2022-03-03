@@ -23,3 +23,5 @@ exports.ALCHEMY_API_KEY_RINKEBY = process.env.ALCHEMY_API_KEY_RINKEBY;
 
 exports.PINATA_API_KEY = process.env.PINATA_API_KEY;
 exports.PINATA_API_SECRET = process.env.PINATA_API_SECRET;
+
+exports.ETHER_SCAN_API_KEY = process.env.ETHER_SCAN_API_KEY;
