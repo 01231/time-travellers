@@ -179,7 +179,7 @@ const createProposal = async (markdown, choices, title) => {
       metadata: JSON.stringify({}),
     });
   } catch (err) {
-    console.log(err);
+    throw new Error(err.message);
   }
 };
 

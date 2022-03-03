@@ -1,6 +1,7 @@
 const fetch = require("node-fetch");
 const ethers = require("ethers");
-const tweetToken = require("../src/config/contracts/TimeTravellersNFT.json");
+const timeTravellersNFT = require("../src/config/contracts/TimeTravellersNFT.json");
+const timeTravellersToken = require("../src/config/contracts/TimeTravellersToken.json");
 const addressMap = require("../src/config/contracts/map.json");
 
 const {
@@ -11,15 +12,35 @@ const {
   ENV,
 } = require("./utils/config");
 
-const calculateWinner = (votes) => {
+const PROVIDER = new ethers.providers.AlchemyProvider(
+  "rinkeby",
+  ALCHEMY_API_KEY_RINKEBY
+);
+const NFT_CONTRACT_ADDRESS = addressMap["4"].TimeTravellersNFT;
+const TOKEN_CONTRACT_ADDRESS = addressMap["4"].TimeTravellersToken;
+
+// get token amount of wallet at time lock
+const getVotingPower = async (voter) => {
+  const TimeTravellersToken = new ethers.Contract(
+    TOKEN_CONTRACT_ADDRESS,
+    timeTravellersToken.abi,
+    PROVIDER
+  );
+  // TODO: fetch balance at block nr
+  const balance = await TimeTravellersToken.balanceOf(voter);
+  const wholeTokens = parseInt(ethers.utils.formatEther(balance), 10);
+  return wholeTokens;
+};
+
+const calculateWinner = async (votes) => {
   const result = {};
 
   // count votes for each choice
   for (let i = 0; i < votes.length; i++) {
-    const { choice } = votes[i];
-    // get token amount of wallet at time lock
-    const votingPower = 1;
-    // const votingPower = getVotingPower(voter, blockNumber); // TODO: fetch balance at block nr
+    const { choice, voter } = votes[i];
+    // const votingPower = 1;
+    // eslint-disable-next-line no-await-in-loop
+    const votingPower = await getVotingPower(voter);
     // if value exists add one, otherwise initalize with zero
     result[choice] = (result[choice] || 0) + votingPower;
   }
@@ -29,12 +50,12 @@ const calculateWinner = (votes) => {
 
   // get choice that was voted the most
   keys.forEach((key) => {
-    // TODO: what if it is a draw
     if (result[key] > result[winner]) {
       winner = key;
     }
   });
 
+  // if it is a draw, the nft that was proposed first wins
   return winner;
 };
 
@@ -134,20 +155,15 @@ const getWinnerAddress = (winnerChoice) => {
     throw new Error(err.message);
   }
 };
+
 const mintTweet = async (winnerAddress, tokenURI) => {
   console.log("mintdata", winnerAddress, tokenURI);
 
-  const provider = new ethers.providers.AlchemyProvider(
-    "rinkeby",
-    ALCHEMY_API_KEY_RINKEBY
-  );
-
-  const wallet = new ethers.Wallet(PRIMARY_PRIVATE_KEY, provider);
-  const signer = wallet.connect(provider);
-  const tweetTokenAddress = addressMap["4"].TimeTravellersNFT;
+  const wallet = new ethers.Wallet(PRIMARY_PRIVATE_KEY, PROVIDER);
+  const signer = wallet.connect(PROVIDER);
   const TimeTravellersNFT = new ethers.Contract(
-    tweetTokenAddress,
-    tweetToken.abi,
+    NFT_CONTRACT_ADDRESS,
+    timeTravellersNFT.abi,
     signer
   );
 
@@ -155,21 +171,21 @@ const mintTweet = async (winnerAddress, tokenURI) => {
 };
 
 exports.handler = async (event) => {
-  const { id, event: proposalEvent, space } = JSON.parse(event.body);
-  console.log(id, proposalEvent, space, event);
+  // const { id, event: proposalEvent, space } = JSON.parse(event.body);
+  // console.log(id, proposalEvent, space, event);
   try {
-    if (proposalEvent === "proposal/end" && space === "3.spaceshot.eth") {
-      // "proposal/0xdc7b2ea2aa18cc9176807e6e25dbf071db111669f7dc4ce4de5d2a7775bf8773" ->
-      // "0xdc7b2ea2aa18cc9176807e6e25dbf071db111669f7dc4ce4de5d2a7775bf8773"
-      const proposalHash = id.split("/")[1];
-      // const proposalHash =
-      //   "0x6234e158a82799a8ae459c21f5dc6f436ec24b06bf5030079706c5244e41a34b";
+    // if (proposalEvent === "proposal/end" && space === "3.spaceshot.eth") {
+    // "proposal/0xdc7b2ea2aa18cc9176807e6e25dbf071db111669f7dc4ce4de5d2a7775bf8773" ->
+    // "0xdc7b2ea2aa18cc9176807e6e25dbf071db111669f7dc4ce4de5d2a7775bf8773"
+    // const proposalHash = id.split("/")[1];
+    const proposalHash =
+      "0x6234e158a82799a8ae459c21f5dc6f436ec24b06bf5030079706c5244e41a34b";
 
-      const votes = await getVotes(proposalHash);
-      const winnerChoice = calculateWinner(votes);
-      const mintData = await getWinnerAddress(winnerChoice);
-      await mintTweet(...mintData);
-    }
+    const votes = await getVotes(proposalHash);
+    const winnerChoice = calculateWinner(votes);
+    const mintData = await getWinnerAddress(winnerChoice);
+    // await mintTweet(...mintData);
+    // }
 
     return {
       statusCode: 200,
