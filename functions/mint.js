@@ -145,10 +145,24 @@ const getWinnerAddress = (winnerChoice) => {
         if (rows.length <= 0) {
           throw new Error("No Tweets have been proposed!");
         }
-        const { metadata } = rows[0];
+        let imageIndex = 1;
+        let jsonIndex = 0;
+
+        if (rows[0].size > rows[1].size) {
+          imageIndex = 0;
+          jsonIndex = 1;
+        }
+
+        const { metadata } = rows[imageIndex];
         const { keyvalues: keyValues } = metadata;
-        const { ipfs_pin_hash: tokenURI } = rows[1];
-        console.log("test", tokenURI, keyValues.walletAddress);
+        const { ipfs_pin_hash: tokenURI } = rows[jsonIndex];
+        console.log(
+          "test",
+          tokenURI,
+          keyValues.walletAddress,
+          jsonIndex,
+          imageIndex
+        );
 
         return { tokenURI: tokenURI, winnerAddress: keyValues.walletAddress };
       });
