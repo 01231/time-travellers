@@ -48,10 +48,10 @@ const getCurrentChoiceNr = async () => {
 async function uploadToPinata(
   pinataContent,
   fileName,
+  tweetCreatedAt,
   isJSON = false,
   tweetURL = "",
   name = "",
-  tweetCreatedAt = "",
   address = ""
 ) {
   const fd = new FormData();
@@ -125,16 +125,21 @@ exports.handler = async (event) => {
     const ipfsImagePath = await uploadToPinata(
       imageData,
       `${prefix}${tweetId}.png`,
+      tweetCreatedAt,
       false,
       tweetURL,
       metadata.name,
-      tweetCreatedAt,
       address
     );
 
     metadata.image = ipfsImagePath;
 
-    tokenURI = await uploadToPinata(metadata, `${prefix}${tweetId}.json`, true);
+    tokenURI = await uploadToPinata(
+      metadata,
+      `${prefix}${tweetId}.json`,
+      tweetCreatedAt,
+      true
+    );
   } catch (err) {
     console.log(err);
     return {
