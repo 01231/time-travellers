@@ -1,10 +1,11 @@
 {
   "4": {
-    "TimeTravellersNFT": "0xB168A16ABa49FB97179E6043Cea49B745D8C8051"
+    "TimeTravellersNFT": "0x593a99419bC83C7dd10fDf0Ae796A5E16AC4F07E",
+    "TimeTravellersToken": "0x6C74aDc0D6dB2Ca6A9758EE28BD86a66c922A5AB"
   },
   "1337": {
-    "TimeTravellersNFT": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
-    "TimeTravellersToken": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
+    "TimeTravellersNFT": "0x959922bE3CAee4b8Cd9a407cc3ac1C251C2007B1",
+    "TimeTravellersToken": "0x9A9f2CCfdE556A7E9Ff0848998Aa4a0CFD8863AE"
   },
   "31337": {
     "TimeTravellersNFT": "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0",

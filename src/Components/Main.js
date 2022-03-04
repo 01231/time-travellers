@@ -27,7 +27,8 @@ const tweetURLPattern =
 const beautifyAddress = (address) =>
   `${address.substr(0, 6)}...${address.substr(-4)}`;
 
-function Main({ account, network, getAccount }) {
+function Main({ account, network, getAccount, provider }) {
+
   const [state, setState] = React.useState({
     theme: "light",
     language: "en",
@@ -209,7 +210,7 @@ function Main({ account, network, getAccount }) {
         </Grid>
         <Grid id="time-machine" item xs={12}>
           <Typography variant="h2">Time Machine</Typography>
-          <Calendar sx={{ pt: 100 }} />
+          <Calendar provider={provider} sx={{ pt: 100 }} />
         </Grid>
         <Grid id="vote" item xs={12}>
           <Typography variant="h2">Vote</Typography>
