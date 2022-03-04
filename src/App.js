@@ -1,6 +1,6 @@
+import React, { useEffect, useState } from "react";
 import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
 import { ThemeProvider, CssBaseline } from "@mui/material";
-import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import Main from "./Components/Main";
 import theme from "./config/theme";

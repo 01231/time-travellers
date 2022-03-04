@@ -14,9 +14,12 @@ const basicTheme = createTheme({
       "BlinkMacSystemFont",
       "-apple-system",
     ].join(","),
+    h1: {
+      lineHeight: "122.19%",
+      fontSize: 48,
+    },
     h2: {
       fontSize: 24,
-      textAlign: "center",
       fontWeight: "700",
       textTransform: "uppercase",
     },
@@ -47,16 +50,16 @@ const basicTheme = createTheme({
     },
     MuiCssBaseline: {
       styleOverrides: {
-        // html: {
-        //   height: "100%",
-        // },
+        html: {
+          height: "100%",
+        },
         body: {
           // color: "rgba(255, 255, 255, 0.932)",
-          // backgroundColor: "rgba(0, 0, 0, 0.87)",
-          // paddingTop: 16,
-          // paddingBottom: 16,
+          backgroundColor: "#131318",
+          paddingTop: 16,
+          paddingBottom: 16,
           minWidth: 320,
-          // minHeight: "100%",
+          minHeight: "100%",
         },
         code: {
           padding: ".2em .4em",

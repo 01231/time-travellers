@@ -1,6 +1,16 @@
-import React from "react";
-import { Button, Container, Link, Card, CardMedia, Grid } from "@mui/material";
+import React, { useRef, useEffect, useState } from "react";
+import {
+  Button,
+  Container,
+  Typography,
+  Link,
+  Card,
+  CardMedia,
+  Box,
+  Grid,
+} from "@mui/material";
 import { LoadingButton } from "@mui/lab";
+import GLOBE from "vanta/dist/vanta.globe.min";
 import ThemeToggle from "./ThemeToggle";
 import URLInput from "./URLInput";
 import Calendar from "./Calendar";
@@ -22,6 +32,31 @@ function Main({ account, network, getAccount }) {
     nftMetadata: "",
   });
   const [formIsSubmitting, setFormIsSubmitting] = React.useState(false);
+  const [vantaEffect, setVantaEffect] = useState(0);
+
+  const myRef = useRef(null);
+  useEffect(() => {
+    if (!vantaEffect) {
+      setVantaEffect(
+        GLOBE({
+          el: myRef.current,
+          mouseControls: true,
+          touchControls: true,
+          gyroControls: false,
+          // minHeight: 2.0,
+          // minWidth: 320.0,
+          scale: 1.0,
+          // scaleMobile: 1.0,
+          color: 0xca3e6d,
+          size: 0.9,
+          backgroundColor: 0x131318,
+        })
+      );
+    }
+    return () => {
+      if (vantaEffect) vantaEffect.destroy();
+    };
+  }, [vantaEffect]);
 
   const handleChange = (target) => {
     const { value, name } = target;
@@ -144,29 +179,46 @@ function Main({ account, network, getAccount }) {
 
   return (
     <Container maxWidth="lg">
+      <Box
+        sx={{
+          minHeight: "100%",
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: -1,
+          position: "absolute",
+        }}
+        ref={myRef}
+      />
       <Header />
-      <div>{account}</div>
-      <div>
-        {network.name}: {network.chainId}
-      </div>
-
-      <Button variant="contained" onClick={getAccount}>
-        Log in with Metamask
-      </Button>
       <Grid container>
+        <Grid item xs={12} sx={{ height: "64vw" }}>
+          <Typography variant="h1">Time Travellers DAO</Typography>
+          <Typography variant="subtitle1" component="p">
+            Preserving history!
+          </Typography>
+        </Grid>
         <Grid id="time-machine" item xs={12}>
-          <h2>Time Machine</h2>
-          <Calendar />
+          <Typography variant="h2">Time Machine</Typography>
+          <Calendar sx={{ pt: 100 }} />
         </Grid>
         <Grid id="vote" item xs={12}>
-          <h2>Vote</h2>
+          <Typography variant="h2">Vote</Typography>
           {/* TODO: make link dynamic */}
           <Link href="https://snapshot.org/#/3.spaceshot.eth/proposal/0xd0d72b5fcc26c406db68a41f10517fb3d16dbe8c903d811add57e6b099ed364e">
             Snapshot
           </Link>
         </Grid>
         <Grid id="propose" item xs={12}>
-          <h2>Propose</h2>
+          <Typography variant="h2">Propose</Typography>
+          <div>{account}</div>
+          <div>
+            {network.name}: {network.chainId}
+          </div>
+
+          <Button variant="contained" onClick={getAccount}>
+            Log in with Metamask
+          </Button>
           <ThemeToggle
             defaultTheme={state.theme}
             handleChange={handleChange}
@@ -202,7 +254,7 @@ function Main({ account, network, getAccount }) {
           )}
         </Grid>
         <Grid id="faq" item xs={12}>
-          <h2>FAQ</h2>
+          <Typography variant="h2">FAQ</Typography>
         </Grid>
       </Grid>
     </Container>

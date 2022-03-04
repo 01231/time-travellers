@@ -34,8 +34,6 @@ function Header() {
       color="transparent"
       sx={{
         boxShadow: 0,
-        mb: 2,
-        mt: 2,
       }}
     >
       <Toolbar
