@@ -140,7 +140,7 @@ const getWinnerAddress = (winnerChoice) => {
     )
       .then(async (res) => res.json())
       .then((json) => {
-        console.log("pinata", json);
+        console.log("pinata", json, winnerChoice, ENV);
         const { rows } = json;
         if (rows.length <= 0) {
           throw new Error("No Tweets have been proposed!");
