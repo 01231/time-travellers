@@ -24,7 +24,7 @@ function Calendar({ provider }) {
 
   // for testing purposes, feel free to remove them
   // -----
-  async function getName() {
+  /* async function getName() {
     const NFTContract = new ethers.Contract(
       nftAddress[4].TimeTravellersNFT,
       NFT.abi,
@@ -32,7 +32,7 @@ function Calendar({ provider }) {
     );
     const result = await NFTContract.name();
     console.log(result);
-  }
+  } */
   async function mintToken() {
     const signer = provider.getSigner();
     const NFTContract = new ethers.Contract(
@@ -54,9 +54,9 @@ function Calendar({ provider }) {
       <button type="button" onClick={(e) => mintToken(e)}>
         mint Token
       </button>
-      <button type="button" onClick={(e) => getName(e)}>
+      {/* <button type="button" onClick={(e) => getName(e)}>
         get Name
-      </button>
+  </button> */}
       <br />
       Calendar
       <div>
