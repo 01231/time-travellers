@@ -152,14 +152,27 @@ exports.createScreenshot = async ({
         document.getElementsByTagName("head")[0].appendChild(style);
 
         const body = document.querySelector("body");
-        body.style.padding = `${props.padding}px`;
-        body.style.backgroundColor = props.theme === "dark" ? "#000" : "#fff";
+        body.style.margin = `${props.padding}px`;
+        body.style.height = "100%";
+        body.style.padding = "0px";
+        body.style.backgroundImage =
+          "url('https://drive.google.com/uc?id=16kNGv7U9CUjcHNjm1em374Uc1QXMey53')";
+        body.style.backgroundColor = "#131318";
+        // body.style.backgroundSize = "auto";
+        // body.style.backgroundRepeat = "no-repeat";
+
         body.style.zoom = `${100 * props.percent}%`;
+
         const articleWrapper = document.querySelector("#app > div");
         articleWrapper.style.border = "none";
+
+        const tweet = document.querySelector("#app > div > div > div");
+        tweet.style.backgroundColor = "#fff";
       },
       { theme, padding, percent }
     );
+
+    await page.waitForTimeout(1000);
 
     const imageBuffer = await page.screenshot({
       type: "png",
