@@ -1,4 +1,4 @@
-import { Toolbar, AppBar, IconButton, Box, Typography } from "@mui/material";
+import { Toolbar, AppBar, IconButton, Typography } from "@mui/material";
 import { ReactComponent as LogoIcon } from "../assets/icons/logo.svg";
 
 function Footer() {
