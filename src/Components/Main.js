@@ -28,7 +28,6 @@ const beautifyAddress = (address) =>
   `${address.substr(0, 6)}...${address.substr(-4)}`;
 
 function Main({ account, network, getAccount, provider }) {
-
   const [state, setState] = React.useState({
     theme: "light",
     language: "en",
