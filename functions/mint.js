@@ -145,9 +145,9 @@ const getWinnerAddress = (winnerChoice) => {
         if (rows.length <= 0) {
           throw new Error("No Tweets have been proposed!");
         }
-        const { ipfs_pin_hash: tokenURI } = rows[0];
-        const { metadata } = rows[1];
+        const { metadata } = rows[0];
         const { keyvalues: keyValues } = metadata;
+        const { ipfs_pin_hash: tokenURI } = rows[1];
 
         return { tokenURI: tokenURI, winnerAddress: keyValues.walletAddress };
       });
