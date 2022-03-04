@@ -1,9 +1,18 @@
 import React, { useState } from "react";
-import { Button, Typography, Card, CardMedia } from "@mui/material";
+import {
+  Button,
+  Typography,
+  Box,
+  Stepper,
+  StepLabel,
+  Stack,
+  Step,
+  Paper,
+  Card,
+  CardMedia,
+} from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { ReactComponent as WalletIcon } from "../assets/icons/wallet.svg";
-import { ReactComponent as TwitterIcon } from "../assets/icons/twitter.svg";
-import ThemeToggle from "./ThemeToggle";
 import URLInput from "./URLInput";
 
 import { BASE_URL, FUNCTIONS_PREFIX } from "../config/globals";
@@ -25,6 +34,19 @@ function Propose({ account, network, getAccount }) {
     nftMetadata: "",
   });
   const [formIsSubmitting, setFormIsSubmitting] = React.useState(false);
+  const [activeStep, setActiveStep] = React.useState(0);
+
+  const handleNext = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const handleReset = () => {
+    setActiveStep(1);
+  };
 
   const handleImageFetch = async () => {
     const { tweetURL, language, theme } = state;
@@ -67,7 +89,7 @@ function Propose({ account, network, getAccount }) {
         });
         // await saveToCache(image, metadata, language, theme, tweetURL);
         setFormIsSubmitting(false);
-        // handleNext();
+        handleNext();
       })
       .catch((err) => {
         setState({
@@ -76,12 +98,6 @@ function Propose({ account, network, getAccount }) {
         });
         setFormIsSubmitting(false);
       });
-  };
-
-  const handleClick = (e) => {
-    if (e.target.name === "next") {
-      handleImageFetch();
-    }
   };
 
   const handleChange = (target) => {
@@ -128,77 +144,130 @@ function Propose({ account, network, getAccount }) {
         const errorMessage = (await res.json()).error;
         throw new Error(errorMessage);
       })
-      .then((data) => data.tokenURI)
+      .then((data) => {
+        handleNext();
+        return data.tokenURI;
+      })
       .catch((err) => {
         setState({
           ...state,
           formErrorMessage: err.message,
         });
-        setFormIsSubmitting(false);
       });
   };
 
   const handleMint = async () => {
     setFormIsSubmitting(true);
-    // const tokenURI = await getTokenURI();
     await getTokenURI();
     setFormIsSubmitting(false);
   };
 
+  const steps = [
+    {
+      title: "Login",
+      caption: "Connect to MetaMask",
+      description: (
+        <LoadingButton
+          // loading={loading}
+          // value="1"
+          // name="wallet"
+          fullWidth
+          loadingIndicator="connecting..."
+          aria-label="connect to metamask"
+          variant="contained"
+          onClick={getAccount}
+          endIcon={<WalletIcon />}
+          sx={{ mt: 1 }}
+        >
+          {account ? beautifyAddress(account) : "Connect"}
+        </LoadingButton>
+      ),
+      nextBtnText: "Next",
+      handleNext: handleNext,
+    },
+    {
+      title: "Clone",
+      caption: "Style and create the Tweet",
+      description: (
+        <URLInput
+          state={state}
+          formIsSubmitting={formIsSubmitting}
+          handleChange={handleChange}
+        />
+      ),
+      nextBtnText: "Clone",
+      handleNext: handleImageFetch,
+    },
+    {
+      title: "Propose",
+      caption: "Submit you suggestion",
+      description: (
+        <Card sx={{ width: 1, mt: 2 }}>
+          <CardMedia
+            component="img"
+            image={`data:image/png;base64,${state.imageData}`}
+            alt="screenshot of tweet"
+          />
+        </Card>
+      ),
+      nextBtnText: "Propose",
+      handleNext: handleMint,
+    },
+  ];
+
   return (
     <>
       <Typography variant="h2">Propose</Typography>
-      <div>
-        {network.name}: {network.chainId}
-      </div>
-      <LoadingButton
-        // loading={loading}
-        // value="1"
-        // name="wallet"
-        // fullWidth
-        loadingIndicator="connecting..."
-        aria-label="connect to metamask"
-        variant="contained"
-        onClick={getAccount}
-        endIcon={<WalletIcon />}
-        sx={{ mt: 1 }}
-      >
-        {account ? beautifyAddress(account) : "Connect"}
-      </LoadingButton>
-      <ThemeToggle
-        defaultTheme={state.theme}
-        handleChange={handleChange}
-        formIsSubmitting={formIsSubmitting}
-      />
-      <URLInput
-        state={state}
-        formIsSubmitting={formIsSubmitting}
-        handleChange={handleChange}
-      />
-      <LoadingButton
-        variant="contained"
-        name="next"
-        // sx={{ flexGrow: 1 }}
-        // disabled={nextBtnDisabled}
-        onClick={handleClick}
-        // type={isForm ? "submit" : "button"}
-        loading={formIsSubmitting}
-        endIcon={<TwitterIcon width="24px" height="24px" />}
-      >
-        Clone Tweet
-      </LoadingButton>
-      {state.imageData && (
-        <>
-          <Card sx={{ width: 1, mt: 2 }}>
-            <CardMedia
-              component="img"
-              image={`data:image/png;base64,${state.imageData}`}
-              alt="screenshot of tweet"
-            />
-          </Card>
-          <Button onClick={handleMint}>Upload to IPFS</Button>
-        </>
-      )}
+      <Box sx={{ maxWidth: 400 }}>
+        <Stepper activeStep={activeStep}>
+          {steps.map((step, i) => (
+            <Step key={step.title} sx={{ pl: i === 0 ? 0 : 1 }}>
+              <StepLabel>{step.title}</StepLabel>
+            </Step>
+          ))}
+        </Stepper>
+        <Box sx={{ mb: 2, mt: 2 }}>
+          {activeStep !== steps.length ? (
+            <>
+              <Typography>{steps[activeStep].description}</Typography>
+              <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
+                <Button
+                  disabled={activeStep === 0 || formIsSubmitting}
+                  variant="outlined"
+                  onClick={handleBack}
+                  sx={{ flexGrow: 1 }}
+                >
+                  Back
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={steps[activeStep].handleNext}
+                  sx={{ flexGrow: 1 }}
+                  disabled={
+                    !account || network.chainId !== 4 || formIsSubmitting
+                  }
+                >
+                  {steps[activeStep].nextBtnText}
+                </Button>
+              </Stack>
+            </>
+          ) : (
+            <>
+              <Typography>
+                Your suggestion has been successfully submitted!
+              </Typography>
+              <Button
+                variant="outlined"
+                fullWidth
+                onClick={handleReset}
+                sx={{ mt: 1, mr: 1 }}
+              >
+                Reset
+              </Button>
+            </>
+          )}
+        </Box>
+      </Box>
     </>
   );
 }
