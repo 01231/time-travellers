@@ -1,6 +1,12 @@
 import { createTheme } from "@mui/material";
 
 const basicTheme = createTheme({
+  palette: {
+    mode: "dark",
+    primary: {
+      main: "#ca3e6d",
+    },
+  },
   typography: {
     fontFamily: [
       "Roboto",
@@ -8,29 +14,56 @@ const basicTheme = createTheme({
       "BlinkMacSystemFont",
       "-apple-system",
     ].join(","),
+    h1: {
+      lineHeight: "122.19%",
+      fontSize: 48,
+    },
+    h2: {
+      fontSize: 28,
+      fontWeight: "700",
+      textTransform: "uppercase",
+    },
   },
   shape: {
     borderRadius: 8,
   },
   components: {
+    MuiButton: {
+      styleOverrides: {
+        sizeMedium: {
+          fontSize: 24,
+        },
+        sizeLarge: {
+          fontSize: 27,
+        },
+      },
+    },
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          textTransform: "uppercase",
+          fontWeight: 700,
+        },
+      },
+    },
     MuiCssBaseline: {
       styleOverrides: {
-        // html: {
-        //   height: "100%",
-        // },
+        html: {
+          height: "100%",
+        },
         body: {
-          // backgroundColor: "rgba(255, 255, 255, 0.932)",
-          // color: "rgba(0, 0, 0, 0.87)",
-          // paddingTop: 16,
-          // paddingBottom: 16,
+          // color: "rgba(255, 255, 255, 0.932)",
+          backgroundColor: "#131318",
+          paddingTop: 16,
+          paddingBottom: 16,
           minWidth: 320,
-          // minHeight: "100%",
+          minHeight: "100%",
         },
         code: {
           padding: ".2em .4em",
           margin: 0,
           fontSize: "85%",
-          backgroundColor: "rgba(0, 0, 0, 0.08)",
+          backgroundColor: "rgba(255, 255, 255, 0.15)",
           borderRadius: 8,
         },
       },
