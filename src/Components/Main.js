@@ -52,6 +52,7 @@ function Main({ account, network, getAccount }) {
           // minWidth: 320.0,
           scale: 1.0,
           // scaleMobile: 1.0,
+          zoom: 0.65,
           color: 0xca3e6d,
           size: 0.9,
           backgroundColor: 0x131318,

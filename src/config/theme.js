@@ -19,7 +19,7 @@ const basicTheme = createTheme({
       fontSize: 48,
     },
     h2: {
-      fontSize: 24,
+      fontSize: 28,
       fontWeight: "700",
       textTransform: "uppercase",
     },
