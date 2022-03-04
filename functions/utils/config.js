@@ -15,7 +15,8 @@ exports.TWEET_SETTINGS = {
   TWEET_HIDE_CARD: false,
 };
 
-exports.ENV = process.env.NODE_ENV || "production";
+exports.ENV =
+  process.env.NODE_ENV === "development" ? process.env.NODE_ENV : "production";
 
 exports.PRIMARY_PRIVATE_KEY = process.env.PRIMARY_PRIVATE_KEY;
 
