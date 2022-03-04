@@ -148,6 +148,7 @@ const getWinnerAddress = (winnerChoice) => {
         const { metadata } = rows[0];
         const { keyvalues: keyValues } = metadata;
         const { ipfs_pin_hash: tokenURI } = rows[1];
+        console.log("test", tokenURI, keyValues.walletAddress);
 
         return { tokenURI: tokenURI, winnerAddress: keyValues.walletAddress };
       });
