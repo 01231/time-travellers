@@ -15,6 +15,7 @@ import ThemeToggle from "./ThemeToggle";
 import URLInput from "./URLInput";
 import Calendar from "./Calendar";
 import Header from "./Header";
+import Footer from "./Footer";
 
 import { BASE_URL, FUNCTIONS_PREFIX } from "../config/globals";
 import { ReactComponent as WalletIcon } from "../assets/icons/wallet.svg";
@@ -199,7 +200,9 @@ function Main({ account, network, getAccount }) {
       <Header />
       <Grid container>
         <Grid item xs={12} sx={{ height: "100vh" }}>
-          <Typography variant="h1">Time Travellers DAO</Typography>
+          <Typography variant="h1" sx={{ mt: 28 }}>
+            Time Travellers DAO
+          </Typography>
           <Typography variant="subtitle1" component="p">
             Preserving history!
           </Typography>
@@ -271,6 +274,9 @@ function Main({ account, network, getAccount }) {
         </Grid>
         <Grid id="faq" item xs={12}>
           <Typography variant="h2">FAQ</Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Footer />
         </Grid>
       </Grid>
     </Container>

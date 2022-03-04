@@ -9,6 +9,8 @@
 - use gnosis safe
 - calculate voting power at blocknumber using snapshot.js
 - update the token address in snapshot space after deploying a new contract
+- delete old proposals
+- add meta descriptions
 
 ## Contracts
 
