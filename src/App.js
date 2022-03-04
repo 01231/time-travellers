@@ -9,7 +9,7 @@ function App() {
   const [account, setAccount] = useState("");
   const [network, setNetwork] = useState({});
 
-  // const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
 
   async function getAccount() {
     if (typeof window.ethereum !== "undefined") {
@@ -24,8 +24,6 @@ function App() {
   }
 
   useEffect(() => {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-
     async function gettingNetworkNameChainId() {
       const getNetWork = await provider.getNetwork();
       setNetwork(getNetWork);
@@ -33,7 +31,7 @@ function App() {
 
     getAccount();
     gettingNetworkNameChainId();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   function handleChainChanged() {
     // We reload the page, because it is recommend by metamask
@@ -76,6 +74,7 @@ function App() {
                 network={network}
                 account={account}
                 getAccount={getAccount}
+                provider={provider}
               />
             }
           />

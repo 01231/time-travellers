@@ -10,7 +10,7 @@ import { BASE_URL, FUNCTIONS_PREFIX } from "../config/globals";
 const tweetURLPattern =
   /^((?:http:\/\/)?|(?:https:\/\/)?)?(?:www\.)?twitter\.com\/(\w+)\/status\/(\d+)$/i;
 
-function Main({ account, network, getAccount }) {
+function Main({ account, network, getAccount, provider }) {
   const [state, setState] = React.useState({
     theme: "light",
     language: "en",
@@ -184,7 +184,7 @@ function Main({ account, network, getAccount }) {
           <Button onClick={handleMint}>Upload to IPFS</Button>
         </>
       )}
-      <Calendar />
+      <Calendar provider={provider} />
     </Container>
   );
 }
