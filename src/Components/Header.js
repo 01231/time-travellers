@@ -91,6 +91,14 @@ function Header() {
               {page}
             </MenuItem>
           ))}
+          <MenuItem
+            to="#time-machine"
+            component={HashLink}
+            smooth
+            onClick={closeMenu}
+          >
+            time machine
+          </MenuItem>
         </Menu>
         <Box
           sx={{
