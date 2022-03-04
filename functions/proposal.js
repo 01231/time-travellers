@@ -112,7 +112,7 @@ const getProposedTweets = async () => {
   const { start, end, yesterday } = dates;
 
   // allow only tweets that were created the day before
-  const metadataFilter = `&metadata[keyvalues]={"date":{"value":"${start}","secondValue":"${end}","op":"between"},"type":{"value":"tweet","op":"eq"},"env":{"value":"${ENV}","op":"eq"}}`;
+  const metadataFilter = `&metadata[keyvalues]={"date":{"value":"${start}","secondValue":"${end}","op":"between"},"type":{"value":"tweet","op":"eq"},"env":{"value":"production","op":"eq"}}`;
 
   return fetch(
     // fetch pinned tweets that were pinned and created yesterday
