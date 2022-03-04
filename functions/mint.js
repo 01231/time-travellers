@@ -107,12 +107,12 @@ const getVotes = (proposalHash) => {
 
 const getDates = () => {
   let start = new Date();
-  start.setDate(start.getDate() - 2);
+  start.setDate(start.getDate() - 1);
   start.setUTCHours(0, 0, 0, 0);
   start = start.toISOString();
 
   let end = new Date();
-  end.setDate(end.getDate() - 2);
+  end.setDate(end.getDate() - 1);
   end.setUTCHours(23, 59, 59, 999);
   end = end.toISOString();
 

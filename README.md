@@ -6,6 +6,8 @@
 
 ## TODO
 
+- when no metamask is installed, website crashes
+- other networks than rinkeby give errors
 - use gnosis safe
 - calculate voting power at blocknumber using snapshot.js
 - update the token address in snapshot space after deploying a new contract
@@ -31,6 +33,14 @@
 - user pastes link of tweet
 - user that vote can get rewarded?
 - i propose a tweet today, but people can only vote on the day after -> bundle the proposals
+
+## Features
+
+### Website
+
+- responsive
+- accessible
+- SEO friendly
 
 ## Stack
 
