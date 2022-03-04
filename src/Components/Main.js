@@ -1,9 +1,10 @@
 import React from "react";
-import { Button, Container, Card, CardMedia } from "@mui/material";
+import { Button, Container, Link, Card, CardMedia, Grid } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import ThemeToggle from "./ThemeToggle";
 import URLInput from "./URLInput";
 import Calendar from "./Calendar";
+import Header from "./Header";
 
 import { BASE_URL, FUNCTIONS_PREFIX } from "../config/globals";
 
@@ -143,6 +144,7 @@ function Main({ account, network, getAccount }) {
 
   return (
     <Container maxWidth="lg">
+      <Header />
       <div>{account}</div>
       <div>
         {network.name}: {network.chainId}
@@ -151,40 +153,58 @@ function Main({ account, network, getAccount }) {
       <Button variant="contained" onClick={getAccount}>
         Log in with Metamask
       </Button>
-      <ThemeToggle
-        defaultTheme={state.theme}
-        handleChange={handleChange}
-        formIsSubmitting={formIsSubmitting}
-      />
-      <URLInput
-        state={state}
-        formIsSubmitting={formIsSubmitting}
-        handleChange={handleChange}
-      />
-      <LoadingButton
-        variant="contained"
-        name="next"
-        // sx={{ flexGrow: 1 }}
-        // disabled={nextBtnDisabled}
-        onClick={handleClick}
-        // type={isForm ? "submit" : "button"}
-        loading={formIsSubmitting}
-      >
-        Clone Tweet
-      </LoadingButton>
-      {state.imageData && (
-        <>
-          <Card sx={{ width: 1, mt: 2 }}>
-            <CardMedia
-              component="img"
-              image={`data:image/png;base64,${state.imageData}`}
-              alt="screenshot of tweet"
-            />
-          </Card>
-          <Button onClick={handleMint}>Upload to IPFS</Button>
-        </>
-      )}
-      <Calendar />
+      <Grid container>
+        <Grid id="time-machine" item xs={12}>
+          <h2>Time Machine</h2>
+          <Calendar />
+        </Grid>
+        <Grid id="vote" item xs={12}>
+          <h2>Vote</h2>
+          {/* TODO: make link dynamic */}
+          <Link href="https://snapshot.org/#/3.spaceshot.eth/proposal/0xd0d72b5fcc26c406db68a41f10517fb3d16dbe8c903d811add57e6b099ed364e">
+            Snapshot
+          </Link>
+        </Grid>
+        <Grid id="propose" item xs={12}>
+          <h2>Propose</h2>
+          <ThemeToggle
+            defaultTheme={state.theme}
+            handleChange={handleChange}
+            formIsSubmitting={formIsSubmitting}
+          />
+          <URLInput
+            state={state}
+            formIsSubmitting={formIsSubmitting}
+            handleChange={handleChange}
+          />
+          <LoadingButton
+            variant="contained"
+            name="next"
+            // sx={{ flexGrow: 1 }}
+            // disabled={nextBtnDisabled}
+            onClick={handleClick}
+            // type={isForm ? "submit" : "button"}
+            loading={formIsSubmitting}
+          >
+            Clone Tweet
+          </LoadingButton>
+          {state.imageData && (
+            <>
+              <Card sx={{ width: 1, mt: 2 }}>
+                <CardMedia
+                  component="img"
+                  image={`data:image/png;base64,${state.imageData}`}
+                  alt="screenshot of tweet"
+                />
+              </Card>
+              <Button onClick={handleMint}>Upload to IPFS</Button>
+            </>
+          )}
+        </Grid>
+        <Grid id="faq" item xs={12}>
+          <h2>FAQ</h2>
+        </Grid>
+      </Grid>
     </Container>
   );
 }
