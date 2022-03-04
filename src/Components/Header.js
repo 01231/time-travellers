@@ -122,6 +122,7 @@ function Header() {
             component={HashLink}
             smooth
             variant="contained"
+            sx={{ fontWeight: 700 }}
           >
             time machine
           </Button>

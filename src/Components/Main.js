@@ -17,9 +17,14 @@ import Calendar from "./Calendar";
 import Header from "./Header";
 
 import { BASE_URL, FUNCTIONS_PREFIX } from "../config/globals";
+import { ReactComponent as WalletIcon } from "../assets/icons/wallet.svg";
+import { ReactComponent as TwitterIcon } from "../assets/icons/twitter.svg";
 
 const tweetURLPattern =
   /^((?:http:\/\/)?|(?:https:\/\/)?)?(?:www\.)?twitter\.com\/(\w+)\/status\/(\d+)$/i;
+
+const beautifyAddress = (address) =>
+  `${address.substr(0, 6)}...${address.substr(-4)}`;
 
 function Main({ account, network, getAccount }) {
   const [state, setState] = React.useState({
@@ -192,7 +197,7 @@ function Main({ account, network, getAccount }) {
       />
       <Header />
       <Grid container>
-        <Grid item xs={12} sx={{ height: "64vw" }}>
+        <Grid item xs={12} sx={{ height: "100vh" }}>
           <Typography variant="h1">Time Travellers DAO</Typography>
           <Typography variant="subtitle1" component="p">
             Preserving history!
@@ -211,14 +216,23 @@ function Main({ account, network, getAccount }) {
         </Grid>
         <Grid id="propose" item xs={12}>
           <Typography variant="h2">Propose</Typography>
-          <div>{account}</div>
           <div>
             {network.name}: {network.chainId}
           </div>
-
-          <Button variant="contained" onClick={getAccount}>
-            Log in with Metamask
-          </Button>
+          <LoadingButton
+            // loading={loading}
+            // value="1"
+            // name="wallet"
+            // fullWidth
+            loadingIndicator="connecting..."
+            aria-label="connect to metamask"
+            variant="contained"
+            onClick={getAccount}
+            endIcon={<WalletIcon />}
+            sx={{ mt: 1 }}
+          >
+            {account ? beautifyAddress(account) : "Connect"}
+          </LoadingButton>
           <ThemeToggle
             defaultTheme={state.theme}
             handleChange={handleChange}
@@ -237,6 +251,7 @@ function Main({ account, network, getAccount }) {
             onClick={handleClick}
             // type={isForm ? "submit" : "button"}
             loading={formIsSubmitting}
+            endIcon={<TwitterIcon width="24px" height="24px" />}
           >
             Clone Tweet
           </LoadingButton>

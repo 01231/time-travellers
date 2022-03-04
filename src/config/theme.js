@@ -32,11 +32,9 @@ const basicTheme = createTheme({
       styleOverrides: {
         sizeMedium: {
           fontSize: 24,
-          fontWeight: 700,
         },
         sizeLarge: {
           fontSize: 27,
-          fontWeight: 700,
         },
       },
     },
