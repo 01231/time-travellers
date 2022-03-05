@@ -27,7 +27,7 @@ const strategies = JSON.stringify([
   },
 ]);
 
-// TODO: how to make plugin dynamic?
+// TODO: how to make plugin dynamic? or remove plugin? safeSnap unused?
 const plugins = JSON.stringify({
   safeSnap: {
     safes: [
@@ -112,7 +112,7 @@ const getProposedTweets = async () => {
   const { start, end, yesterday } = dates;
 
   // allow only tweets that were created the day before
-  const metadataFilter = `&metadata[keyvalues]={"date":{"value":"${start}","secondValue":"${end}","op":"between"},"type":{"value":"tweet","op":"eq"},"env":{"value":"production","op":"eq"}}`;
+  const metadataFilter = `&metadata[keyvalues]={"date":{"value":"${start}","secondValue":"${end}","op":"between"},"type":{"value":"tweet","op":"eq"},"env":{"value":"${ENV}","op":"eq"}}`;
 
   return fetch(
     // fetch pinned tweets that were pinned and created yesterday
@@ -176,7 +176,7 @@ const createProposal = async (markdown, choices, title) => {
       body: markdown,
       choices: choices,
       start: formatDate(Date.now()),
-      end: formatDate(Date.now() + 1000 * 60 * 3), // + 30mins // TODO: make one day or 23 h
+      end: formatDate(Date.now() + 1000 * 60 * 30), // + 30mins // TODO: make one day or 23 h
       snapshot: blockNumber, // TODO: how far back do we want to go?
       network: "4", // TODO: dynamic?
       strategies: strategies,
