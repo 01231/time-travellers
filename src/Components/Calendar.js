@@ -108,7 +108,7 @@ function Calendar({ provider }) {
           <div key={index.tokenID}>
             {index.tokenID}
             <br />
-            <img alt="tweets" src={finishedImageURL[i]} />
+            <img width="300px" alt="tweets" src={finishedImageURL[i]} />
           </div>
         ))}
       </div>
