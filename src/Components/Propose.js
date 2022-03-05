@@ -21,6 +21,7 @@ import {
   REACT_APP_PINATA_API_SECRET,
 } from "../config/globals";
 
+const standardErrorMessage = "Something went wrong. Pleas try again later!";
 const tweetURLPattern =
   /^((?:http:\/\/)?|(?:https:\/\/)?)?(?:www\.)?twitter\.com\/(\w+)\/status\/(\d+)$/i;
 
@@ -65,6 +66,7 @@ function Propose({ account, network, getAccount }) {
 
   // eslint-disable-next-line arrow-body-style
   const isDuplicateTweet = (tweetId) => {
+    console.log(REACT_APP_PINATA_API_KEY, REACT_APP_PINATA_API_SECRET);
     return new Promise((resolve, reject) => {
       fetch(
         `https://api.pinata.cloud/data/pinList?status=pinned&metadata[keyvalues]={"tweetId":{"value":"${tweetId}","op":"eq"}}`,
@@ -78,8 +80,9 @@ function Propose({ account, network, getAccount }) {
       )
         .then(async (res) => res.json())
         .then((json) => {
+          console.log(json);
           if (json.error) {
-            reject(new Error("Something went wrong. Pleas try again later!"));
+            reject(new Error(standardErrorMessage));
           }
           if (json.rows.length > 0) {
             setState({
@@ -129,7 +132,7 @@ function Propose({ account, network, getAccount }) {
     } catch (err) {
       setState({
         ...state,
-        formErrorMessage: "Something went wrong. Pleas try again later!",
+        formErrorMessage: standardErrorMessage,
       });
       setFormIsSubmitting(false);
       return;
@@ -201,7 +204,7 @@ function Propose({ account, network, getAccount }) {
     } catch (err) {
       setState({
         ...state,
-        formErrorMessage: "Something went wrong. Pleas try again later!",
+        formErrorMessage: standardErrorMessage,
       });
       return;
     }
