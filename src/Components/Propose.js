@@ -14,10 +14,22 @@ import { LoadingButton } from "@mui/lab";
 import { ReactComponent as WalletIcon } from "../assets/icons/wallet.svg";
 import URLInput from "./URLInput";
 
-import { BASE_URL, FUNCTIONS_PREFIX } from "../config/globals";
+import {
+  BASE_URL,
+  FUNCTIONS_PREFIX,
+  REACT_APP_PINATA_API_KEY,
+  REACT_APP_PINATA_API_SECRET,
+} from "../config/globals";
 
 const tweetURLPattern =
   /^((?:http:\/\/)?|(?:https:\/\/)?)?(?:www\.)?twitter\.com\/(\w+)\/status\/(\d+)$/i;
+
+const getTweetId = (tweetURL) => {
+  const splitTweetURL = tweetURL.split("/");
+  const lastItem = splitTweetURL[splitTweetURL.length - 1];
+  const splitLastItem = lastItem.split("?");
+  return splitLastItem[0];
+};
 
 const beautifyAddress = (address) =>
   `${address.substr(0, 6)}...${address.substr(-4)}`;
@@ -44,6 +56,38 @@ function Propose({ account, network, getAccount }) {
     }
   }, [account, network.chainId, state]);
 
+  // eslint-disable-next-line arrow-body-style
+  const isDuplicateTweet = (tweetId) => {
+    return new Promise((resolve, reject) => {
+      fetch(
+        `https://api.pinata.cloud/data/pinList?status=pinned&metadata[keyvalues]={"tweetId":{"value":"${tweetId}","op":"eq"}}`,
+        {
+          method: "GET",
+          headers: {
+            pinata_api_key: REACT_APP_PINATA_API_KEY,
+            pinata_secret_api_key: REACT_APP_PINATA_API_SECRET,
+          },
+        }
+      )
+        .then(async (res) => res.json())
+        .then((json) => {
+          if (json.error) {
+            reject(new Error("Something went wrong. Pleas try again later!"));
+          }
+          if (json.rows.length > 0) {
+            setState({
+              ...state,
+              formErrorMessage:
+                "This Tweet was already suggested. Try another one!",
+            });
+            setFormIsSubmitting(false);
+            resolve(true);
+          }
+          resolve(false);
+        });
+    });
+  };
+
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
@@ -58,6 +102,8 @@ function Propose({ account, network, getAccount }) {
 
   const handleImageFetch = async () => {
     const { tweetURL, language, theme } = state;
+    const tweetId = getTweetId(tweetURL);
+
     setFormIsSubmitting(true);
 
     setState({
@@ -65,16 +111,19 @@ function Propose({ account, network, getAccount }) {
       imageData: "",
     });
 
-    // if (await isDuplicateTweet()) {
-    //   setFormIsSubmitting(false);
-    //   return;
-    // }
+    try {
+      if (await isDuplicateTweet(tweetId)) {
+        return;
+      }
+    } catch (err) {
+      setState({
+        ...state,
+        formErrorMessage: "Something went wrong. Pleas try again later!",
+      });
+      setFormIsSubmitting(false);
 
-    // if (await isImageCached(language, theme, tweetURL)) {
-    //   setFormIsSubmitting(false);
-    //   handleNext();
-    //   return;
-    // }
+      return;
+    }
 
     fetch(`${BASE_URL}${FUNCTIONS_PREFIX}/image`, {
       method: "POST",
@@ -132,9 +181,22 @@ function Propose({ account, network, getAccount }) {
     });
   };
 
-  // eslint-disable-next-line arrow-body-style
-  const getTokenURI = () => {
-    return fetch(`${BASE_URL}${FUNCTIONS_PREFIX}/token`, {
+  const getTokenURI = async () => {
+    const { tweetURL } = state;
+    const tweetId = getTweetId(tweetURL);
+
+    try {
+      if (await isDuplicateTweet(tweetId)) {
+        return;
+      }
+    } catch (err) {
+      setState({
+        ...state,
+        formErrorMessage: "Something went wrong. Pleas try again later!",
+      });
+    }
+
+    await fetch(`${BASE_URL}${FUNCTIONS_PREFIX}/token`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",

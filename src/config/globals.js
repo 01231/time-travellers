@@ -11,3 +11,6 @@ export const URL_TO_TWEET_ID = (tweetURL) => {
   const splitLastItem = lastItem.split("?");
   return splitLastItem[0];
 };
+
+export const { REACT_APP_PINATA_API_KEY } = process.env;
+export const { REACT_APP_PINATA_API_SECRET } = process.env;

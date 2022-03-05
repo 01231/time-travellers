@@ -1,7 +1,11 @@
 const FormData = require("form-data");
 const fetch = require("node-fetch");
 const { Readable } = require("stream");
-const { PINATA_API_KEY, PINATA_API_SECRET, ENV } = require("./utils/config");
+const {
+  REACT_APP_PINATA_API_KEY,
+  REACT_APP_PINATA_API_SECRET,
+  ENV,
+} = require("./utils/config");
 
 const { getTweetId } = require("./utils/twitter");
 
@@ -32,8 +36,8 @@ const getCurrentChoiceNr = async () => {
     {
       method: "GET",
       headers: {
-        pinata_api_key: PINATA_API_KEY,
-        pinata_secret_api_key: PINATA_API_SECRET,
+        pinata_api_key: REACT_APP_PINATA_API_KEY,
+        pinata_secret_api_key: REACT_APP_PINATA_API_SECRET,
       },
     }
   )
@@ -49,6 +53,7 @@ async function uploadToPinata(
   pinataContent,
   fileName,
   isJSON = false,
+  tweetId = "",
   tweetURL = "",
   name = "",
   tweetCreatedAt = "",
@@ -72,6 +77,7 @@ async function uploadToPinata(
           env: ENV,
           date: tweetCreatedAt,
           twitterURL: tweetURL,
+          tweetId: tweetId,
           description: name,
           choice: choice,
           walletAddress: address,
@@ -97,8 +103,8 @@ async function uploadToPinata(
   return fetch("https://api.pinata.cloud/pinning/pinFileToIPFS", {
     method: "POST",
     headers: {
-      pinata_api_key: PINATA_API_KEY,
-      pinata_secret_api_key: PINATA_API_SECRET,
+      pinata_api_key: REACT_APP_PINATA_API_KEY,
+      pinata_secret_api_key: REACT_APP_PINATA_API_SECRET,
     },
     body: fd,
   })
@@ -126,6 +132,7 @@ exports.handler = async (event) => {
       imageData,
       `${prefix}${tweetId}.png`,
       false,
+      tweetId,
       tweetURL,
       metadata.name,
       tweetCreatedAt,

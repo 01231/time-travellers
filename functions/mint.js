@@ -5,8 +5,8 @@ const timeTravellersToken = require("../src/config/contracts/TimeTravellersToken
 const addressMap = require("../src/config/contracts/map.json");
 
 const {
-  PINATA_API_KEY,
-  PINATA_API_SECRET,
+  REACT_APP_PINATA_API_KEY,
+  REACT_APP_PINATA_API_SECRET,
   ALCHEMY_API_KEY_RINKEBY,
   PRIMARY_PRIVATE_KEY,
   ENV,
@@ -133,8 +133,8 @@ const getWinnerAddress = (winnerChoice) => {
       {
         method: "GET",
         headers: {
-          pinata_api_key: PINATA_API_KEY,
-          pinata_secret_api_key: PINATA_API_SECRET,
+          pinata_api_key: REACT_APP_PINATA_API_KEY,
+          pinata_secret_api_key: REACT_APP_PINATA_API_SECRET,
         },
       }
     )
