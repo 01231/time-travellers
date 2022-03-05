@@ -171,7 +171,7 @@ const getWinnerAddress = (winnerChoice) => {
   }
 };
 
-const mintTweet = async (winnerAddress, tokenURI) => {
+const mintTweet = async (tokenURI, winnerAddress) => {
   console.log("mintdata", winnerAddress, tokenURI);
 
   const wallet = new ethers.Wallet(PRIMARY_PRIVATE_KEY, PROVIDER);
@@ -181,9 +181,9 @@ const mintTweet = async (winnerAddress, tokenURI) => {
     timeTravellersNFT.abi,
     signer
   );
-  console.log("mintdata", NFT_CONTRACT_ADDRESS);
+  console.log("mintdata", NFT_CONTRACT_ADDRESS, `ipfs://${tokenURI}`);
 
-  await TimeTravellersNFT.mintTweet(winnerAddress, tokenURI);
+  await TimeTravellersNFT.mintTweet(winnerAddress, `ipfs://${tokenURI}`);
 };
 
 exports.handler = async (event) => {
@@ -195,7 +195,7 @@ exports.handler = async (event) => {
       // "0xdc7b2ea2aa18cc9176807e6e25dbf071db111669f7dc4ce4de5d2a7775bf8773"
       const proposalHash = id.split("/")[1];
       // const proposalHash =
-      //   "0x6234e158a82799a8ae459c21f5dc6f436ec24b06bf5030079706c5244e41a34b";
+      //   "0x8575111e380340a0ef509408abf8f044dd06b8a53d03a4324dbcead1ba57dc28";
 
       const votes = await getVotes(proposalHash);
       const winnerChoice = await calculateWinner(votes);
