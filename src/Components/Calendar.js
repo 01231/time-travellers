@@ -8,6 +8,7 @@ function Calendar({ provider }) {
   const [allTweets, setAllTweets] = useState([]);
   const allURLs = [];
   const [finishedImageURL, setFinishedImageURL] = useState([]);
+  const [datesState, setDatesState] = useState([]);
   const NFTContract = new ethers.Contract(
     nftAddress[4].TimeTravellersNFT,
     NFT.abi,
@@ -28,12 +29,25 @@ function Calendar({ provider }) {
         `Error while fetching the JSON's for the tweets from IPFS ${error}`
       );
     }
+
     const myImages = [];
-    myJsons.map((index) => myImages.push(index.data.image));
-    const finishedURLForImages = [];
-    myImages.map((index) =>
-      finishedURLForImages.push(`https://gateway.pinata.cloud/ipfs/${index}`)
+    myJsons.map((index) =>
+      myImages.push({
+        time: index.data.attributes[2].value,
+        image: index.data.image,
+      })
     );
+    const finishedURLForImages = [];
+
+    myImages.map((index) =>
+      finishedURLForImages.push(
+        `https://gateway.pinata.cloud/ipfs/${index.image}`
+      )
+    );
+    const dates = [];
+    myImages.map((index) => dates.push(index.time));
+    setDatesState(dates);
+
     setFinishedImageURL(finishedURLForImages);
   }
   function buildAllURLs() {
@@ -77,7 +91,13 @@ function Calendar({ provider }) {
     fetchAllTweets();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  async function mintToken() {
+  function convertUnix(unix) {
+    let myDate = new Date(unix * 1000);
+    myDate = myDate.toGMTString();
+    return myDate;
+  }
+
+  /* async function mintToken() {
     const signer = provider.getSigner();
     const NFTSignerContract = new ethers.Contract(
       nftAddress[4].TimeTravellersNFT,
@@ -88,11 +108,11 @@ function Calendar({ provider }) {
       "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
       "https://twitter.com/BinanceUS/status/1499457941510004745"
     );
-  }
+  } */
   // -----
   return (
     <div>
-      <button type="button" onClick={(e) => fetchAllTweets(e)}>
+      {/* <button type="button" onClick={(e) => fetchAllTweets(e)}>
         fetch All tweets
       </button>
       <button type="button" onClick={(e) => mintToken(e)}>
@@ -100,15 +120,16 @@ function Calendar({ provider }) {
       </button>
       <button type="button" onClick={(e) => buildAllURLs(e)}>
         build URLs
-      </button>
-      <br />
+      </button> 
+      <br /> */}
       Calendar
       <div>
         {allTweets.map((index, i) => (
           <div key={index.tokenID}>
-            {index.tokenID}
+            Proposed by: {index.owner}
             <br />
-            <img width="300px" alt="tweets" src={finishedImageURL[i]} />
+            <div>Tweet of the day: {convertUnix(datesState[i])}</div>
+            <img alt="tweets" src={finishedImageURL[i]} />
           </div>
         ))}
       </div>
