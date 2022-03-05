@@ -63,7 +63,7 @@ function Vote() {
         Time Travellers DAO
       </Typography>
       <Typography variant="subtitle1" component="p">
-        We preserve history that matters! Vote and suggest your favorite tweets
+        We preserve history that matters! Vote and suggest your favourite Tweets
         and we keep them for eternity.
       </Typography>
       <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
