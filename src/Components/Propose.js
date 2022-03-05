@@ -90,6 +90,10 @@ function Propose({ account, network, getAccount }) {
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setState({
+      ...state,
+      formErrorMessage: "",
+    });
   };
 
   const handleBack = () => {
@@ -314,7 +318,11 @@ function Propose({ account, network, getAccount }) {
                   onClick={steps[activeStep].handleNext}
                   sx={{ flexGrow: 1 }}
                   disabled={
-                    !account || network.chainId !== 4 || formIsSubmitting
+                    ((!state.tweetURL || state.invalidTweetURLMessage) &&
+                      activeStep === 1) ||
+                    !account ||
+                    network.chainId !== 4 ||
+                    formIsSubmitting
                   }
                 >
                   {steps[activeStep].nextBtnText}
