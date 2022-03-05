@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Typography,
@@ -7,7 +7,6 @@ import {
   StepLabel,
   Stack,
   Step,
-  Paper,
   Card,
   CardMedia,
 } from "@mui/material";
@@ -35,6 +34,15 @@ function Propose({ account, network, getAccount }) {
   });
   const [formIsSubmitting, setFormIsSubmitting] = React.useState(false);
   const [activeStep, setActiveStep] = React.useState(0);
+
+  useEffect(() => {
+    if (account && network.chainId !== 4 && !state.formErrorMessage) {
+      setState({
+        ...state,
+        formErrorMessage: "Please use the Rinkeby Test network to proceed.",
+      });
+    }
+  }, [account, network.chainId, state]);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -250,6 +258,11 @@ function Propose({ account, network, getAccount }) {
                   {steps[activeStep].nextBtnText}
                 </Button>
               </Stack>
+              <Box sx={{ mt: 1 }}>
+                <Typography color="error" variant="caption">
+                  {state.formErrorMessage}
+                </Typography>
+              </Box>
             </>
           ) : (
             <>
