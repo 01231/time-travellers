@@ -181,6 +181,7 @@ exports.createScreenshot = async ({
     });
 
     await browser.close();
+
     return imageBuffer;
   } catch (err) {
     const msg = "Could not clone the Tweet!";
@@ -191,7 +192,8 @@ exports.createScreenshot = async ({
 
 exports.checkTweetURL = (tweetURL) => {
   const tweetId = getTweetId(tweetURL);
-  const api = `https://api.twitter.com/2/tweets/${tweetId}?expansions=author_id`;
+  const api = `https://api.twitter.com/2/tweets/${tweetId}?tweet.fields=created_at`;
+
   const headers = {
     Authorization: `Bearer ${TWITTER_BEARER_TOKEN}`,
   };
@@ -207,7 +209,21 @@ exports.checkTweetURL = (tweetURL) => {
           }
           throw new Error(res.errors[0].detail);
         } else {
-          // Users should only be able to mint their own tweets
+          let start = new Date();
+          start.setDate(start.getDate());
+          start.setUTCHours(0, 0, 0, 0);
+          start = start.getTime();
+
+          let end = new Date(); // TODO: is the end date useless?
+          end.setDate(end.getDate());
+          end.setUTCHours(23, 59, 59, 999);
+          end = end.getTime();
+
+          const tweetPosted = new Date(res.data.created_at).getTime();
+          console.log("res", tweetPosted, start, end);
+          if (tweetPosted < start || tweetPosted > end) {
+            throw new Error("This Tweet wasn't posted today!");
+          }
           resolve();
         }
       })

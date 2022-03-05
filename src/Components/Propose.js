@@ -97,10 +97,10 @@ function Propose({ account, network, getAccount }) {
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setState({
-      ...state,
-      formErrorMessage: "",
-    });
+    // setState({
+    //   ...state,
+    //   formErrorMessage: "",
+    // });
   };
 
   const handleBack = () => {
@@ -154,7 +154,6 @@ function Propose({ account, network, getAccount }) {
           imageData: image,
           nftMetadata: metadata,
         });
-        // await saveToCache(image, metadata, language, theme, tweetURL);
         setFormIsSubmitting(false);
         handleNext();
       })
