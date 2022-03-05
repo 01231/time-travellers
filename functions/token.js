@@ -49,6 +49,7 @@ async function uploadToPinata(
   pinataContent,
   fileName,
   tweetCreatedAt,
+  choice,
   isJSON = false,
   tweetURL = "",
   name = "",
@@ -57,8 +58,6 @@ async function uploadToPinata(
   const fd = new FormData();
   let imgBuffer;
   let readable;
-
-  const choice = await getCurrentChoiceNr();
 
   if (!isJSON) {
     imgBuffer = Buffer.from(pinataContent, "base64");
@@ -121,11 +120,14 @@ exports.handler = async (event) => {
     const prefix = chainId === 1 ? "" : `${chainId}_`;
 
     const tweetCreatedAt = new Date(metadata.attributes[2].value).toISOString();
+    const choice = await getCurrentChoiceNr();
+
     // TODO: if second fails revert first one
     const ipfsImagePath = await uploadToPinata(
       imageData,
       `${prefix}${tweetId}.png`,
       tweetCreatedAt,
+      choice,
       false,
       tweetURL,
       metadata.name,
@@ -138,6 +140,7 @@ exports.handler = async (event) => {
       metadata,
       `${prefix}${tweetId}.json`,
       tweetCreatedAt,
+      choice,
       true
     );
   } catch (err) {

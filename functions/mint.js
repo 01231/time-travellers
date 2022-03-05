@@ -199,7 +199,7 @@ exports.handler = async (event) => {
       const votes = await getVotes(proposalHash);
       const winnerChoice = await calculateWinner(votes);
       const mintData = await getWinnerAddress(winnerChoice);
-      await mintTweet(mintData.tokenURI, mintData.walletAddress);
+      await mintTweet(mintData.tokenURI, mintData.winnerAddress);
     }
 
     return {
