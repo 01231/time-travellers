@@ -181,6 +181,7 @@ const mintTweet = async (winnerAddress, tokenURI) => {
     timeTravellersNFT.abi,
     signer
   );
+  console.log("mintdata", NFT_CONTRACT_ADDRESS);
 
   await TimeTravellersNFT.mintTweet(winnerAddress, tokenURI);
 };
