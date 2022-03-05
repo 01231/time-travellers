@@ -54,7 +54,14 @@ function Propose({ account, network, getAccount }) {
         formErrorMessage: "Please use the Rinkeby Test network to proceed.",
       });
     }
-  }, [account, network.chainId, state]);
+    if (account && network.chainId === 4 && activeStep === 0) {
+      setState({
+        ...state,
+        formErrorMessage: "",
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account, activeStep, network.chainId]);
 
   // eslint-disable-next-line arrow-body-style
   const isDuplicateTweet = (tweetId) => {

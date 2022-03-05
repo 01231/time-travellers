@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Container, Typography, Link, Box, Grid } from "@mui/material";
+import { Container, Typography, Box, Grid } from "@mui/material";
 import GLOBE from "vanta/dist/vanta.globe.min";
 
 import Calendar from "./Calendar";
