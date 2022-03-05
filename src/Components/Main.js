@@ -57,17 +57,24 @@ function Main({ account, network, getAccount, provider }) {
           </Typography>
         </Grid>
         <Grid id="time-machine" item xs={12}>
-          <Typography variant="h2">Time Machine</Typography>
+          <Typography variant="h2" sx={{ mt: 4, mb: 2 }}>
+            Time Machine
+          </Typography>
           <Calendar provider={provider} sx={{ pt: 100 }} />
         </Grid>
         <Grid id="vote" item xs={12}>
-          <Typography variant="h2">Vote</Typography>
+          <Typography variant="h2" sx={{ mt: 4, mb: 2 }}>
+            Vote
+          </Typography>
           {/* TODO: make link dynamic */}
           <Link href="https://snapshot.org/#/3.spaceshot.eth/proposal/0xd0d72b5fcc26c406db68a41f10517fb3d16dbe8c903d811add57e6b099ed364e">
             Snapshot
           </Link>
         </Grid>
         <Grid id="propose" item xs={12}>
+          <Typography variant="h2" sx={{ mt: 4, mb: 2 }}>
+            Propose
+          </Typography>
           <Propose
             account={account}
             network={network}
@@ -75,7 +82,9 @@ function Main({ account, network, getAccount, provider }) {
           />
         </Grid>
         <Grid id="faq" item xs={12}>
-          <Typography variant="h2">FAQ</Typography>
+          <Typography variant="h2" sx={{ mt: 4, mb: 2 }}>
+            FAQ
+          </Typography>
         </Grid>
         <Grid item xs={12}>
           <Footer />

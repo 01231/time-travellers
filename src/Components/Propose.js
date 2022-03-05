@@ -125,7 +125,6 @@ function Propose({ account, network, getAccount }) {
         formErrorMessage: "Something went wrong. Pleas try again later!",
       });
       setFormIsSubmitting(false);
-
       return;
     }
 
@@ -198,6 +197,7 @@ function Propose({ account, network, getAccount }) {
         ...state,
         formErrorMessage: "Something went wrong. Pleas try again later!",
       });
+      return;
     }
 
     await fetch(`${BASE_URL}${FUNCTIONS_PREFIX}/token`, {
@@ -218,9 +218,8 @@ function Propose({ account, network, getAccount }) {
         const errorMessage = (await res.json()).error;
         throw new Error(errorMessage);
       })
-      .then((data) => {
+      .then(() => {
         handleNext();
-        return data.tokenURI;
       })
       .catch((err) => {
         setState({
@@ -230,7 +229,7 @@ function Propose({ account, network, getAccount }) {
       });
   };
 
-  const handleMint = async () => {
+  const handleSuggest = async () => {
     setFormIsSubmitting(true);
     await getTokenURI();
     setFormIsSubmitting(false);
@@ -285,73 +284,70 @@ function Propose({ account, network, getAccount }) {
         </Card>
       ),
       nextBtnText: "Propose",
-      handleNext: handleMint,
+      handleNext: handleSuggest,
     },
   ];
 
   return (
-    <>
-      <Typography variant="h2">Propose</Typography>
-      <Box sx={{ maxWidth: 400 }}>
-        <Stepper activeStep={activeStep}>
-          {steps.map((step, i) => (
-            <Step key={step.title} sx={{ pl: i === 0 ? 0 : 1 }}>
-              <StepLabel>{step.title}</StepLabel>
-            </Step>
-          ))}
-        </Stepper>
-        <Box sx={{ mb: 2, mt: 2 }}>
-          {activeStep !== steps.length ? (
-            <>
-              <Typography>{steps[activeStep].description}</Typography>
-              <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
-                <Button
-                  disabled={activeStep === 0 || formIsSubmitting}
-                  variant="outlined"
-                  onClick={handleBack}
-                  sx={{ flexGrow: 1 }}
-                >
-                  Back
-                </Button>
-                <Button
-                  variant="contained"
-                  onClick={steps[activeStep].handleNext}
-                  sx={{ flexGrow: 1 }}
-                  disabled={
-                    ((!state.tweetURL || state.invalidTweetURLMessage) &&
-                      activeStep === 1) ||
-                    !account ||
-                    network.chainId !== 4 ||
-                    formIsSubmitting
-                  }
-                >
-                  {steps[activeStep].nextBtnText}
-                </Button>
-              </Stack>
-              <Box sx={{ mt: 1 }}>
-                <Typography color="error" variant="caption">
-                  {state.formErrorMessage}
-                </Typography>
-              </Box>
-            </>
-          ) : (
-            <>
-              <Typography>
-                Your suggestion has been successfully submitted!
-              </Typography>
+    <Box sx={{ maxWidth: 400 }}>
+      <Stepper activeStep={activeStep}>
+        {steps.map((step, i) => (
+          <Step key={step.title} sx={{ pl: i === 0 ? 0 : 1 }}>
+            <StepLabel>{step.title}</StepLabel>
+          </Step>
+        ))}
+      </Stepper>
+      <Box sx={{ mb: 2, mt: 2 }}>
+        {activeStep !== steps.length ? (
+          <>
+            <Typography>{steps[activeStep].description}</Typography>
+            <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
               <Button
+                disabled={activeStep === 0 || formIsSubmitting}
                 variant="outlined"
-                fullWidth
-                onClick={handleReset}
-                sx={{ mt: 1, mr: 1 }}
+                onClick={handleBack}
+                sx={{ flexGrow: 1 }}
               >
-                Reset
+                Back
               </Button>
-            </>
-          )}
-        </Box>
+              <Button
+                variant="contained"
+                onClick={steps[activeStep].handleNext}
+                sx={{ flexGrow: 1 }}
+                disabled={
+                  ((!state.tweetURL || state.invalidTweetURLMessage) &&
+                    activeStep === 1) ||
+                  !account ||
+                  network.chainId !== 4 ||
+                  formIsSubmitting
+                }
+              >
+                {steps[activeStep].nextBtnText}
+              </Button>
+            </Stack>
+            <Box sx={{ mt: 1 }}>
+              <Typography color="error" variant="caption">
+                {state.formErrorMessage}
+              </Typography>
+            </Box>
+          </>
+        ) : (
+          <>
+            <Typography>
+              Your suggestion has been successfully submitted!
+            </Typography>
+            <Button
+              variant="outlined"
+              fullWidth
+              onClick={handleReset}
+              sx={{ mt: 1, mr: 1 }}
+            >
+              suggest another
+            </Button>
+          </>
+        )}
       </Box>
-    </>
+    </Box>
   );
 }
 
