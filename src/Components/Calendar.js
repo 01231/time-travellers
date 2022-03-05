@@ -128,11 +128,8 @@ function Calendar({ provider }) {
           <div key={index.tokenID}>
             Proposed by: {index.owner}
             <br />
-
             <div>Tweet of the day: {convertUnix(datesState[i])}</div>
             <img alt="tweets" src={finishedImageURL[i]} />
-
-
           </div>
         ))}
       </div>
