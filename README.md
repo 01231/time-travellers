@@ -1,4 +1,4 @@
-# time-travellers
+# Time Travellers DAO
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/2a316b63-b3d2-4c70-a903-927b1023f116/deploy-status)](https://app.netlify.com/sites/time-travellers/deploys)
 [![Licence](https://img.shields.io/github/license/noahliechti/time-travellers?style=social)](https://github.com/NoahLiechti/time-travellers/blob/main/LICENSE.md)
@@ -6,13 +6,21 @@
 
 ## TODO
 
-- when no metamask is installed, website crashes
-- other networks than rinkeby give errors
-- use gnosis safe
-- calculate voting power at blocknumber using snapshot.js
-- update the token address in snapshot space after deploying a new contract
-- delete old proposals
+- website shouldn't crack when no metamask
+- fix calendar design
+
+- footer design
+- update proposal? gnosis safe plugin entfernen?
 - add meta descriptions
+- proposal auf 23h stellen
+
+- calculate voting power at blocknumber using snapshot.js
+- clock wie lange es noch läuft -> error wenn nicht mehr läuft?
+- roadmap
+- about/team?
+- update the token address in snapshot space after deploying a new contract
+- start puppeteer in utc
+- delete old proposals
 
 ## Contracts
 
@@ -20,27 +28,21 @@
 - NFT
 - ~~DAO~~ -> not needed because we us off-chain voting with snapshot
 
+## Functionality
+
+- A tweet can only be suggested once
+- The voting period on the proposal is 23h
+- We use UTC time
+- Everybody that holds TTT can vote on a proposal
+- I your suggested NFT is chosen as a winner we mint it to you
+- If the voting ends in a draw, the tweet that was proposed first wins
+
 ## Notes
 
 - you become a DAO member if you hold the TTT in your wallet
 - you voting power is dependent of the amount of coins you are holding
-- I your proposed NFT is chosen as a winner you we mint it to you
-- TT NFT in you wallet give you extra voting power
-- A tweet can only be proposed 1x
-- Any tweet can be proposed by anyone, the gets imbedded in the time-travelers branding
+
 - timelock is one week and is for the token, nft
-- (metadata and image onchain)
-- user pastes link of tweet
-- user that vote can get rewarded?
-- i propose a tweet today, but people can only vote on the day after -> bundle the proposals
-
-## Features
-
-### Website
-
-- responsive
-- accessible
-- SEO friendly
 
 ## Stack
 
@@ -61,12 +63,16 @@
 - Snaphshot
 - Gnosis safe
 
-## Extensions (if too much time)
+## Website
+
+- responsive
+- accessible
+- SEO friendly
+
+## Future
 
 - host site on IPFS
 - use web3react to connect to metamask
-
-## Future
 
 ### Dedicated Pinata gateway
 
