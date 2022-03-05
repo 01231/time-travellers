@@ -7,6 +7,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import Propose from "./Propose";
 import Vote from "./Vote";
+import Faq from "./Faq";
 
 function Main({ account, network, getAccount, provider }) {
   const [vantaEffect, setVantaEffect] = useState(0);
@@ -35,7 +36,7 @@ function Main({ account, network, getAccount, provider }) {
   }, [vantaEffect]);
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="md">
       <Box
         sx={{
           minHeight: "100%",
@@ -83,6 +84,7 @@ function Main({ account, network, getAccount, provider }) {
           <Typography variant="h2" sx={{ mt: 4, mb: 2 }}>
             FAQ
           </Typography>
+          <Faq />
         </Grid>
         <Grid item xs={12}>
           <Footer />
