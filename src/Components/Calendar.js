@@ -132,7 +132,7 @@ function Calendar({ provider }) {
             <div>Tweet of the day: {convertUnix(datesState[i])}</div>
           
 
-            <img width="300px" alt="tweets" src={finishedImageURL[i]} />
+            <img alt="tweets"src={finishedImageURL[i]}/>
 
           </div>
         ))}
