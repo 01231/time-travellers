@@ -6,6 +6,7 @@ import Calendar from "./Calendar";
 import Header from "./Header";
 import Footer from "./Footer";
 import Propose from "./Propose";
+import Vote from "./Vote";
 
 function Main({ account, network, getAccount, provider }) {
   const [vantaEffect, setVantaEffect] = useState(0);
@@ -66,10 +67,7 @@ function Main({ account, network, getAccount, provider }) {
           <Typography variant="h2" sx={{ mt: 4, mb: 2 }}>
             Vote
           </Typography>
-          {/* TODO: make link dynamic */}
-          <Link href="https://snapshot.org/#/3.spaceshot.eth/proposal/0xd0d72b5fcc26c406db68a41f10517fb3d16dbe8c903d811add57e6b099ed364e">
-            Snapshot
-          </Link>
+          <Vote />
         </Grid>
         <Grid id="propose" item xs={12}>
           <Typography variant="h2" sx={{ mt: 4, mb: 2 }}>
