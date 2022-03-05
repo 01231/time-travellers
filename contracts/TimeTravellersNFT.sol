@@ -20,22 +20,19 @@ contract TimeTravellersNFT is ERC721URIStorage, AccessControl {
         address indexed minter
     );
 
-    constructor()
-        //string memory _newBaseURI
-        ERC721("Time-Travellers-NFT", "TTN")
-    {
-        _grantRole(MINTER_ROLE, msg.sender);
-    }
-
     struct Tweet {
         uint16 tokenID; // +1/day = 179 years worth of ID's
         string tokenURI;
         address owner;
     }
 
-    Tweet[] public arrayOffAllTweets;
+    Tweet[] public tweets;
 
-    //mapping(uint16 => Tweet) public IdToTweet;
+    // mapping(uint16 => Tweet) public IdToTweet;
+
+    constructor() ERC721("Time-Travellers-NFT", "TTN") {
+        _grantRole(MINTER_ROLE, msg.sender);
+    }
 
     function getAllMintedTokens() external view returns (Tweet[] memory) {
         /*uint16 currentId = uint16(_tokenCounter.current());
@@ -44,7 +41,7 @@ contract TimeTravellersNFT is ERC721URIStorage, AccessControl {
             returnArray[i - 1] = IdToTweet[i];
         }
         return returnArray; // 37223 gas*/
-        return arrayOffAllTweets; // 36514 gas
+        return tweets; // 36514 gas
     }
 
     function mintTweet(address _account, string memory _tokenURI)
@@ -56,8 +53,7 @@ contract TimeTravellersNFT is ERC721URIStorage, AccessControl {
         uint16 currentId = uint16(_tokenCounter.current());
         _safeMint(_account, currentId); // checks if id is already minted
         _setTokenURI(currentId, _tokenURI);
-        arrayOffAllTweets.push(Tweet(currentId, _tokenURI, _account));
-        //IdToTweet[currentId] = Tweet(currentId, _tokenURI, _account);
+        tweets.push(Tweet(currentId, _tokenURI, _account));
         emit TokenCreated(currentId, _tokenURI, _account);
         return currentId;
     }
