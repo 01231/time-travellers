@@ -4,7 +4,7 @@ const snapshot = require("@snapshot-labs/snapshot.js");
 const { ethers } = require("ethers");
 const {
   PRIMARY_PRIVATE_KEY,
-  ALCHEMY_API_KEY_RINKEBY,
+  REACT_APP_ALCHEMY_API_KEY_RINKEBY,
   REACT_APP_PINATA_API_KEY,
   REACT_APP_PINATA_API_SECRET,
   ENV,
@@ -158,7 +158,7 @@ const createProposal = async (markdown, choices, title) => {
 
   const provider = new ethers.providers.AlchemyProvider(
     "rinkeby",
-    ALCHEMY_API_KEY_RINKEBY
+    REACT_APP_ALCHEMY_API_KEY_RINKEBY
   );
   const wallet = new ethers.Wallet(PRIMARY_PRIVATE_KEY, provider);
   const signer = wallet.connect(provider);

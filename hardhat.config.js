@@ -10,7 +10,7 @@ const {
   REPORT_GAS,
   PRIMARY_PRIVATE_KEY,
   COINMARKETCAP_API_KEY,
-  ALCHEMY_API_KEY_RINKEBY,
+  REACT_APP_ALCHEMY_API_KEY_RINKEBY,
 } = process.env;
 
 task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
@@ -31,7 +31,7 @@ module.exports = {
     },
     rinkeby: {
       chainId: 4,
-      url: `https://eth-rinkeby.alchemyapi.io/v2/${ALCHEMY_API_KEY_RINKEBY}`,
+      url: `https://eth-rinkeby.alchemyapi.io/v2/${REACT_APP_ALCHEMY_API_KEY_RINKEBY}`,
       accounts: [PRIMARY_PRIVATE_KEY],
     },
   },
