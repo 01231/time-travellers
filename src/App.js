@@ -24,13 +24,13 @@ function App() {
   }
 
   useEffect(() => {
-    async function gettingNetworkNameChainId() {
-      const getNetWork = await provider.getNetwork();
-      setNetwork(getNetWork);
+    async function setNetworkData() {
+      const getNetwork = await provider.getNetwork();
+      setNetwork(getNetwork);
     }
 
     getAccount();
-    gettingNetworkNameChainId();
+    setNetworkData();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   function handleChainChanged() {

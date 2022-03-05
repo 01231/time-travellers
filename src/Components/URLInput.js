@@ -26,10 +26,6 @@ const faq = {
 function ImageCreation({ state, formIsSubmitting, handleChange }) {
   return (
     <>
-      <Typography component="div" variant="body">
-        Paste the link of your Tweet into the input field. This process can take
-        a while. <b>Don't reload</b> the page.
-      </Typography>
       <Box sx={{ mt: 2 }}>
         <FaqElement {...faq} />
       </Box>

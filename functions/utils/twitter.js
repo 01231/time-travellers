@@ -152,14 +152,27 @@ exports.createScreenshot = async ({
         document.getElementsByTagName("head")[0].appendChild(style);
 
         const body = document.querySelector("body");
-        body.style.padding = `${props.padding}px`;
-        body.style.backgroundColor = props.theme === "dark" ? "#000" : "#fff";
+        body.style.margin = `${props.padding}px`;
+        body.style.height = "100%";
+        body.style.padding = "0px";
+        body.style.backgroundImage =
+          "url('https://drive.google.com/uc?id=16kNGv7U9CUjcHNjm1em374Uc1QXMey53')";
+        body.style.backgroundColor = "#131318";
+        // body.style.backgroundSize = "auto";
+        // body.style.backgroundRepeat = "no-repeat";
+
         body.style.zoom = `${100 * props.percent}%`;
+
         const articleWrapper = document.querySelector("#app > div");
         articleWrapper.style.border = "none";
+
+        const tweet = document.querySelector("#app > div > div > div");
+        tweet.style.backgroundColor = "#fff";
       },
       { theme, padding, percent }
     );
+
+    await page.waitForTimeout(1000);
 
     const imageBuffer = await page.screenshot({
       type: "png",
@@ -168,6 +181,7 @@ exports.createScreenshot = async ({
     });
 
     await browser.close();
+
     return imageBuffer;
   } catch (err) {
     const msg = "Could not clone the Tweet!";
@@ -178,7 +192,8 @@ exports.createScreenshot = async ({
 
 exports.checkTweetURL = (tweetURL) => {
   const tweetId = getTweetId(tweetURL);
-  const api = `https://api.twitter.com/2/tweets/${tweetId}?expansions=author_id`;
+  const api = `https://api.twitter.com/2/tweets/${tweetId}?tweet.fields=created_at`;
+
   const headers = {
     Authorization: `Bearer ${TWITTER_BEARER_TOKEN}`,
   };
@@ -194,7 +209,21 @@ exports.checkTweetURL = (tweetURL) => {
           }
           throw new Error(res.errors[0].detail);
         } else {
-          // Users should only be able to mint their own tweets
+          let start = new Date();
+          start.setDate(start.getDate());
+          start.setUTCHours(0, 0, 0, 0);
+          start = start.getTime();
+
+          let end = new Date(); // TODO: is the end date useless?
+          end.setDate(end.getDate());
+          end.setUTCHours(23, 59, 59, 999);
+          end = end.getTime();
+
+          const tweetPosted = new Date(res.data.created_at).getTime();
+          console.log("res", tweetPosted, start, end);
+          if (tweetPosted < start || tweetPosted > end) {
+            throw new Error("This Tweet wasn't posted today!");
+          }
           resolve();
         }
       })

@@ -5,8 +5,8 @@ const { ethers } = require("ethers");
 const {
   PRIMARY_PRIVATE_KEY,
   ALCHEMY_API_KEY_RINKEBY,
-  PINATA_API_KEY,
-  PINATA_API_SECRET,
+  REACT_APP_PINATA_API_KEY,
+  REACT_APP_PINATA_API_SECRET,
   ENV,
 } = require("./utils/config");
 
@@ -120,8 +120,8 @@ const getProposedTweets = async () => {
     {
       method: "GET",
       headers: {
-        pinata_api_key: PINATA_API_KEY,
-        pinata_secret_api_key: PINATA_API_SECRET,
+        pinata_api_key: REACT_APP_PINATA_API_KEY,
+        pinata_secret_api_key: REACT_APP_PINATA_API_SECRET,
       },
     }
   )
