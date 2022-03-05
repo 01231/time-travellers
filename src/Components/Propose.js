@@ -66,8 +66,6 @@ function Propose({ account, network, getAccount }) {
 
   // eslint-disable-next-line arrow-body-style
   const isDuplicateTweet = (tweetId) => {
-    // eslint-disable-next-line no-console
-    console.log(REACT_APP_PINATA_API_KEY, REACT_APP_PINATA_API_SECRET);
     return new Promise((resolve, reject) => {
       fetch(
         `https://api.pinata.cloud/data/pinList?status=pinned&metadata[keyvalues]={"tweetId":{"value":"${tweetId}","op":"eq"}}`,
@@ -81,8 +79,6 @@ function Propose({ account, network, getAccount }) {
       )
         .then(async (res) => res.json())
         .then((json) => {
-          // eslint-disable-next-line no-console
-          console.log(json);
           if (json.error) {
             reject(new Error(standardErrorMessage));
           }
