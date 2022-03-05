@@ -6,7 +6,8 @@ import Calendar from "./Calendar";
 import Header from "./Header";
 import Footer from "./Footer";
 import Propose from "./Propose";
-import Vote from "./Vote";
+import Title from "./Title";
+import Faq from "./Faq";
 
 function Main({ account, network, getAccount, provider }) {
   const [vantaEffect, setVantaEffect] = useState(0);
@@ -35,7 +36,7 @@ function Main({ account, network, getAccount, provider }) {
   }, [vantaEffect]);
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="md">
       <Box
         sx={{
           minHeight: "100%",
@@ -50,28 +51,18 @@ function Main({ account, network, getAccount, provider }) {
       <Header />
       <Grid container>
         <Grid item xs={12} sx={{ height: "100vh" }}>
-          <Typography variant="h1" sx={{ mt: 28 }}>
-            Time Travellers DAO
-          </Typography>
-          <Typography variant="subtitle1" component="p">
-            Preserving history!
-          </Typography>
+          <Title />
         </Grid>
-        <Grid id="time-machine" item xs={12}>
+        <Grid id="time-machine" item xs={12} md={6}>
           <Typography variant="h2" sx={{ mt: 4, mb: 2 }}>
             Time Machine
           </Typography>
           <Calendar provider={provider} sx={{ pt: 100 }} />
         </Grid>
-        <Grid id="vote" item xs={12}>
+
+        <Grid id="propose" item xs={12} md={6}>
           <Typography variant="h2" sx={{ mt: 4, mb: 2 }}>
-            Vote
-          </Typography>
-          <Vote />
-        </Grid>
-        <Grid id="propose" item xs={12}>
-          <Typography variant="h2" sx={{ mt: 4, mb: 2 }}>
-            Propose
+            Propose a Tweet
           </Typography>
           <Propose
             account={account}
@@ -80,9 +71,10 @@ function Main({ account, network, getAccount, provider }) {
           />
         </Grid>
         <Grid id="faq" item xs={12}>
-          <Typography variant="h2" sx={{ mt: 4, mb: 2 }}>
-            FAQ
+          <Typography variant="h2" sx={{ mt: 4, mb: 2, textAlign: "center" }}>
+            Frequently asked Questions
           </Typography>
+          <Faq />
         </Grid>
         <Grid item xs={12}>
           <Footer />
