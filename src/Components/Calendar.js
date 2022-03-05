@@ -23,11 +23,11 @@ function Calendar({ provider }) {
         })
       );
     } catch (error) {
+      // eslint-disable-next-line
       console.log(
         `Error while fetching the JSON's for the tweets from IPFS ${error}`
       );
     }
-
     const myImages = [];
     myJsons.map((index) => myImages.push(index.data.image));
     const finishedURLForImages = [];
@@ -48,7 +48,6 @@ function Calendar({ provider }) {
       return allURLs;
     });
 
-    // const firstPartURL = "https://gateway.pinata.cloud/ipfs/";
     for (let i = 0; i < arrayOfTokenURIs.length; i++) {
       allURLs.push(`https://gateway.pinata.cloud/ipfs/${arrayOfTokenURIs[i]}`);
     }
@@ -99,9 +98,6 @@ function Calendar({ provider }) {
       <button type="button" onClick={(e) => mintToken(e)}>
         mint Token
       </button>
-      {/* <button type="button" onClick={(e) => getName(e)}>
-        get Name
-  </button> */}
       <button type="button" onClick={(e) => buildAllURLs(e)}>
         build URLs
       </button>
