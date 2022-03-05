@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "@mui/material";
+import { Box, Stack, Button, Typography } from "@mui/material";
+import { HashLink } from "react-router-hash-link";
 
 function Vote() {
   const [link, setLink] = useState("https://snapshot.org/#/3.spaceshot.eth");
@@ -49,9 +50,43 @@ function Vote() {
   }, []);
 
   return (
-    <Link href={link} target="_blank" rel="noopener">
-      Snapshot
-    </Link>
+    <Box
+      sx={{
+        mt: { sm: 38, md: 28 },
+        bottom: { xs: 0 },
+        position: { xs: "absolute", sm: "relative" },
+        mb: { xs: 10 },
+        maxWidth: "425px",
+      }}
+    >
+      <Typography variant="h1" sx>
+        Time Travellers DAO
+      </Typography>
+      <Typography variant="subtitle1" component="p">
+        We preserve history that matters! Vote and suggest your favorite tweets
+        and we keep them for eternity.
+      </Typography>
+      <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
+        <Button
+          variant="contained"
+          to="/#propose"
+          component={HashLink}
+          sx={{ flexGrow: 1 }}
+        >
+          Suggest
+        </Button>
+        <Button
+          href={link}
+          target="_blank"
+          rel="noopener"
+          variant="outlined"
+          color="secondary"
+          sx={{ flexGrow: 1 }}
+        >
+          Vote on Snapshot
+        </Button>
+      </Stack>
+    </Box>
   );
 }
 
