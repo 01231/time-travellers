@@ -129,7 +129,7 @@ function Calendar({ provider }) {
             Proposed by: {index.owner}
             <br />
             <div>Tweet of the day: {convertUnix(datesState[i])}</div>
-            <img alt="tweets" src={finishedImageURL[i]} />
+            <img alt="tweets" width="300px" src={finishedImageURL[i]} />
           </div>
         ))}
       </div>
