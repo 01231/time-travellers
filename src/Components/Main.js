@@ -49,7 +49,7 @@ function Main({ account, network, getAccount, provider }) {
         ref={myRef}
       />
       <Header />
-      <Grid container>
+      <Grid container spacing={4}>
         <Grid item xs={12} sx={{ height: "100vh" }}>
           <Title />
         </Grid>

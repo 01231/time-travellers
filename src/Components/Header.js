@@ -14,7 +14,7 @@ import { HashLink } from "react-router-hash-link";
 import { ReactComponent as LogoIcon } from "../assets/icons/logo.svg";
 import { ReactComponent as MenuIcon } from "../assets/icons/menu.svg";
 
-const pages = ["vote", "propose", "faq"];
+const pages = ["propose", "faq"];
 
 function Header() {
   const [anchorEl, setAnchorEl] = React.useState(null);

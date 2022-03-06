@@ -31,9 +31,9 @@ function Calendar() {
   );
 
   const fetchLastTweet = async () => {
-    const tweetId = ethers.BigNumber.from(0);
-
     if (NFTContract) {
+      const tokens = await NFTContract.getAllMintedTokens();
+      const tweetId = ethers.BigNumber.from(tokens.length - 1);
       const result = await NFTContract.arrayOffAllTweets(tweetId);
       const hash = result.tokenURI.replace("ipfs://", "");
 
@@ -69,7 +69,7 @@ function Calendar() {
   return (
     <Box>
       {/* Proposed by: Date */}
-      <Card sx={{ width: 1, mt: 2 }}>
+      <Card variant="outlined" sx={{ width: 1, mt: 2 }}>
         <CardMedia
           component="img"
           image={image}
