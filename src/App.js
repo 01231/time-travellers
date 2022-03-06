@@ -8,8 +8,11 @@ import theme from "./config/theme";
 function App() {
   const [account, setAccount] = useState("");
   const [network, setNetwork] = useState({});
+  let provider;
 
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  if (window.ethereum) {
+    provider = new ethers.providers.Web3Provider(window.ethereum);
+  }
 
   async function getAccount() {
     if (typeof window.ethereum !== "undefined") {
@@ -25,8 +28,10 @@ function App() {
 
   useEffect(() => {
     async function setNetworkData() {
-      const getNetwork = await provider.getNetwork();
-      setNetwork(getNetwork);
+      if (provider) {
+        const getNetwork = await provider.getNetwork();
+        setNetwork(getNetwork);
+      }
     }
 
     getAccount();
@@ -38,11 +43,14 @@ function App() {
     window.location.reload();
   }
 
+  // eslint-disable-next-line consistent-return
   useEffect(() => {
-    window.ethereum.on("chainChanged", handleChainChanged);
-    return () => {
-      window.ethereum.removeListener("chainChanged", handleChainChanged);
-    };
+    if (window.ethereum) {
+      window.ethereum.on("chainChanged", handleChainChanged);
+      return () => {
+        window.ethereum.removeListener("chainChanged", handleChainChanged);
+      };
+    }
   }, []);
 
   // For now, 'eth_accounts' will continue to always return an array
@@ -54,12 +62,18 @@ function App() {
       window.location.reload();
     }
   }
-  // on account change
+
+  // eslint-disable-next-line consistent-return
   useEffect(() => {
-    window.ethereum.on("accountsChanged", handleAccountsChanged);
-    return () => {
-      window.ethereum.removeListener("accountsChanged", handleAccountsChanged);
-    };
+    if (window.ethereum) {
+      window.ethereum.on("accountsChanged", handleAccountsChanged);
+      return () => {
+        window.ethereum.removeListener(
+          "accountsChanged",
+          handleAccountsChanged
+        );
+      };
+    }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
@@ -74,7 +88,6 @@ function App() {
                 network={network}
                 account={account}
                 getAccount={getAccount}
-                provider={provider}
               />
             }
           />

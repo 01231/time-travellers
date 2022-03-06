@@ -10,7 +10,7 @@ import Title from "./Title";
 import Faq from "./Faq";
 import Roadmap from "./Roadmap";
 
-function Main({ account, network, getAccount, provider }) {
+function Main({ account, network, getAccount }) {
   const [vantaEffect, setVantaEffect] = useState(0);
 
   const myRef = useRef(null);
@@ -58,7 +58,7 @@ function Main({ account, network, getAccount, provider }) {
           <Typography variant="h2" sx={{ mt: 4, mb: 2 }}>
             Time Machine
           </Typography>
-          <Calendar provider={provider} sx={{ pt: 100 }} />
+          <Calendar sx={{ pt: 100 }} />
         </Grid>
 
         <Grid id="propose" item xs={12} md={6}>
