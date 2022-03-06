@@ -22,6 +22,10 @@ const basicTheme = createTheme({
       fontSize: 28,
       fontWeight: "700",
       textTransform: "uppercase",
+      textAlign: "center",
+    },
+    h3: {
+      fontSize: 22,
     },
   },
   shape: {

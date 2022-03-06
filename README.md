@@ -4,20 +4,6 @@
 [![Licence](https://img.shields.io/github/license/noahliechti/time-travellers?style=social)](https://github.com/NoahLiechti/time-travellers/blob/main/LICENSE.md)
 [![Live Demo](https://img.shields.io/badge/Live Preview-Click Me-green.svg?style=social)](https://time-travellers.netlify.app)
 
-## Checklist
-
-- [ ] video demo your project for at most 3 minutes
-- [ ] fill out from
-  - [ ] You must provide a link to the public repository for your project
-  - [ ] You must provide a link to your live project
-  - [ ] You must designate one member of your team as the lead to act as the main point of contact should we need to reach out
-
-- [ ] The name and summary of the project
-- [ ] How the project uses to IPFS and/or Filecoin and/or decentralized storage services that build on top of either with example links to where in code those technologies are used.
-- [ ] Names/pseudonyms of team members and contact info (e.g., GitHub handle, email address, or other)
-- [ ] Provide comprehensive README, incl. a clear description of the work and mention of how our tech is used in the Technologies Used section of README.
-- [ ] 2-3 minute video that presents the idea, including a brief demo that demonstrates the use of IPFS and/or Filecoin or anything that builds on top of them.
-- [ ] Include a link to the working demo or provide a testing guide
 
 ## Problem statement
 
@@ -50,7 +36,7 @@ We run on Rinkeby.
 We us IPFS for all our core functionality.
 
 1. **User suggests a Tweet**: When a user suggests a Tweet, we store it in Pinata and enrich it with additional Metadata. [Link to Code](https://github.com/noahliechti/time-travellers/blob/main/functions/token.js#L102)
-2. **Create Proposal with cron job**: Every day at midnight UTC our cron job gets called and creates a dynamic proposal based on the Tweets that were suggested the day before. We use snapshot.js for this. Snaphot uses IPFS under the hood to store the proposals and votes. [Link to Code](https://github.com/noahliechti/time-travellers/blob/main/functions/proposal.js#L114)
+2. **Create Proposal with cron job**: Every day at midnight UTC our cron job gets called and creates a dynamic proposal based on the Tweets that were suggested the day before. We use snapshot.js for this. Snapshot uses IPFS under the hood to store the proposals and votes. [Link to Code](https://github.com/noahliechti/time-travellers/blob/main/functions/proposal.js#L114)
 3. **Mint Tweet**: After the proposal has ended the webhook of Snapshot calls our serverless function. We analyze the votes with the GraphQL API from Snapshot, grab the address of the person that suggested the Tweet from Pinata and mint the Tweet directly to this person. [Link to Code](https://github.com/noahliechti/time-travellers/blob/main/functions/mint.js#L132)
 
 We interact with Pinata on some other occasions. Feel free to checkout the code.
@@ -69,7 +55,8 @@ We interact with Pinata on some other occasions. Feel free to checkout the code.
 
 ### Backend
 
-- [Netfliy](https://www.netlify.com/): We host the website here. Netlify automatically creates feature previews on pullrequests.
+
+- [Netlify](https://www.netlify.com/): We host the website here. Netlify automatically creates feature previews on pull requests.
   - scheduled functions: Like cron jobs
   - serverless functions
 - Node.js
@@ -80,11 +67,11 @@ We interact with Pinata on some other occasions. Feel free to checkout the code.
 
 ## Challenges
 
-### Onchain vs. offchain governace
+### On-chain vs. off-chain governance
 
-We decided to use offchain governance with Snaphot. With this approach our users save gas without sacrificing decentralization, transparency and security.
+We decided to use off-chain governance with Snapshot. With this approach our users save gas without sacrificing decentralization, transparency and security.
 
-### Make tokens decentralized 
+### Make tokens decentralized
 
 Providing a decentralized token within one week was quiet hard. We determined it would be best to use a multisig wallet that stores most of the DAO's funds and also provides liquidity to a uniswap liquidity pool.
 
@@ -129,8 +116,8 @@ Your voting power is dependent of the amount of tokens you are holding.
 ## Production checklist
 
 - [ ] Dedicated Pinata gateway
-   - greater speed
-   - increased rate limits
+  - greater speed
+  - increased rate limits
 - [ ] ENS Domain
   - Receive funds on own domain
   - Stop using test mode in snapshot

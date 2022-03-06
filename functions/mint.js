@@ -7,14 +7,14 @@ const addressMap = require("../src/config/contracts/map.json");
 const {
   REACT_APP_PINATA_API_KEY,
   REACT_APP_PINATA_API_SECRET,
-  ALCHEMY_API_KEY_RINKEBY,
+  REACT_APP_ALCHEMY_API_KEY_RINKEBY,
   PRIMARY_PRIVATE_KEY,
   ENV,
 } = require("./utils/config");
 
 const PROVIDER = new ethers.providers.AlchemyProvider(
   "rinkeby",
-  ALCHEMY_API_KEY_RINKEBY
+  REACT_APP_ALCHEMY_API_KEY_RINKEBY
 );
 const NFT_CONTRACT_ADDRESS = addressMap["4"].TimeTravellersNFT;
 const TOKEN_CONTRACT_ADDRESS = addressMap["4"].TimeTravellersToken;
