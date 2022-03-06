@@ -27,65 +27,6 @@ const strategies = JSON.stringify([
   },
 ]);
 
-// TODO: how to make plugin dynamic? or remove plugin? safeSnap unused?
-const plugins = JSON.stringify({
-  safeSnap: {
-    safes: [
-      {
-        network: "4",
-        realityAddress: "0xE2f51aa68B9140F9090e40519Ce1bDcDdBC3e4cA",
-        multiSendAddress: "0x8D29bE29923b68abfDD21e541b9374737B49cdAD",
-        hash: "0xf144c9428ba6e01472283c186fed8633cc05184164c223a6cc6591e7ec7ae7bd",
-        txs: [
-          {
-            hash: "0xf9262886d443634b361db0a4be05ec619415308880eaac35555cc8e2e8e5ac23",
-            nonce: 0,
-            mainTransaction: {
-              operation: "0",
-              nonce: "0",
-              token: {
-                name: "Ether",
-                decimals: 18,
-                symbol: "ETH",
-                logoUri:
-                  "https://safe-transaction-assets.gnosis-safe.io/chains/1/currency_logo.png",
-                address: "main",
-              },
-              recipient: "0x24011E9598937bfBFb27FD4D8E9b8FDA42Fa239f",
-              type: "transferFunds",
-              data: "0x",
-              to: "0x24011E9598937bfBFb27FD4D8E9b8FDA42Fa239f",
-              amount: "10000000000000000",
-              value: "10000000000000000",
-            },
-            transactions: [
-              {
-                operation: "0",
-                nonce: 0,
-                token: {
-                  name: "Ether",
-                  decimals: 18,
-                  symbol: "ETH",
-                  logoUri:
-                    "https://safe-transaction-assets.gnosis-safe.io/chains/1/currency_logo.png",
-                  address: "main",
-                },
-                recipient: "0x24011E9598937bfBFb27FD4D8E9b8FDA42Fa239f",
-                type: "transferFunds",
-                data: "0x",
-                to: "0x24011E9598937bfBFb27FD4D8E9b8FDA42Fa239f",
-                amount: "10000000000000000",
-                value: "10000000000000000",
-              },
-            ],
-          },
-        ],
-      },
-    ],
-    valid: true,
-  },
-});
-
 const getDates = () => {
   let start = new Date();
   start.setDate(start.getDate() - 1);
@@ -112,7 +53,7 @@ const getProposedTweets = async () => {
   const { start, end, yesterday } = dates;
 
   // allow only tweets that were created the day before
-  const metadataFilter = `&metadata[keyvalues]={"date":{"value":"${start}","secondValue":"${end}","op":"between"},"type":{"value":"tweet","op":"eq"},"env":{"value":"${ENV}","op":"eq"}}`;
+  const metadataFilter = `&metadata[keyvalues]={"date":{"value":"${start}","secondValue":"${end}","op":"between"},"type":{"value":"tweet","op":"eq"},"env":{"value":"production","op":"eq"}}`;
 
   return fetch(
     // fetch pinned tweets that were pinned and created yesterday
@@ -138,7 +79,8 @@ const getProposedTweets = async () => {
         const { keyvalues: keyValues } = metadata;
         const { choice, description, twitterURL } = keyValues;
 
-        if (choice !== rows.length - i + 1) {
+        // eslint-disable-next-line eqeqeq
+        if (choice != rows.length - i + 1) {
           throw new Error(
             `Ups something went wrong while creating the proposal! choice: ${choice} element: ${
               rows.length - i + 1
@@ -180,7 +122,7 @@ const createProposal = async (markdown, choices, title) => {
       snapshot: blockNumber, // TODO: how far back do we want to go?
       network: "4", // TODO: dynamic?
       strategies: strategies,
-      plugins: plugins,
+      plugins: JSON.stringify({}),
       metadata: JSON.stringify({}),
     });
   } catch (err) {

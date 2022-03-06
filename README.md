@@ -4,6 +4,7 @@
 [![Licence](https://img.shields.io/github/license/noahliechti/time-travellers?style=social)](https://github.com/NoahLiechti/time-travellers/blob/main/LICENSE.md)
 [![Live Demo](https://img.shields.io/badge/Live Preview-Click Me-green.svg?style=social)](https://time-travellers.netlify.app)
 
+
 ## Problem statement
 
 Tweets on average last for about [15 minutes](https://the-refinery.io/blog/how-long-does-a-social-media-post-last). Afterwards they are gone. Forever. But how can we preserve good Tweets and how can we choose this Tweet so that everybody agrees?
@@ -53,6 +54,7 @@ We interact with Pinata on some other occasions. Feel free to checkout the code.
 - SEO friendly TODO: screenshot of lighthouse
 
 ### Backend
+
 
 - [Netlify](https://www.netlify.com/): We host the website here. Netlify automatically creates feature previews on pull requests.
   - scheduled functions: Like cron jobs
