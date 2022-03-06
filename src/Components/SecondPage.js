@@ -9,7 +9,7 @@ function SecondPage({ provider }) {
   const [allTweets, setAllTweets] = useState([]);
   const allURLs = [];
   const [finishedImageURL, setFinishedImageURL] = useState([]);
-  const [datesState, setDatesState] = useState([]);
+  // const [datesState, setDatesState] = useState([]);
   const NFTContract = new ethers.Contract(
     nftAddress[4].TimeTravellersNFT,
     NFT.abi,
@@ -32,22 +32,21 @@ function SecondPage({ provider }) {
     }
 
     const myImages = [];
-    myJsons.map((index) =>
-      myImages.push({
-        time: index.data.attributes[2].value,
-        image: index.data.image,
-      })
+    myJsons.map(
+      (index) => myImages.push(index.data.image)
+      /* myImages.push({
+          time: index.data.attributes[2].value,
+          image: index.data.image,
+        }) */
     );
     const finishedURLForImages = [];
 
     myImages.map((index) =>
-      finishedURLForImages.push(
-        `https://gateway.pinata.cloud/ipfs/${index.image}`
-      )
+      finishedURLForImages.push(`https://gateway.pinata.cloud/ipfs/${index}`)
     );
-    const dates = [];
-    myImages.map((index) => dates.push(index.time));
-    setDatesState(dates);
+    // const dates = [];
+    // myImages.map((index) => dates.push(index.time));
+    // setDatesState(dates);
 
     setFinishedImageURL(finishedURLForImages);
   }
@@ -92,11 +91,11 @@ function SecondPage({ provider }) {
     fetchAllTweets();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  function convertUnix(unix) {
-    let myDate = new Date(unix * 1000);
-    myDate = myDate.toGMTString();
-    return myDate;
-  }
+  /* function convertUnix(unix) {
+      let myDate = new Date(unix * 1000);
+      myDate = myDate.toGMTString();
+      return myDate;
+    } */
 
   /* async function mintToken() {
       const signer = provider.getSigner();

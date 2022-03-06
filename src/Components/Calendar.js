@@ -8,7 +8,7 @@ function Calendar({ provider }) {
   const [allTweets, setAllTweets] = useState([]);
   const allURLs = [];
   const [finishedImageURL, setFinishedImageURL] = useState([]);
-  const [datesState, setDatesState] = useState([]);
+  // const [datesState, setDatesState] = useState([]);
   const NFTContract = new ethers.Contract(
     nftAddress[4].TimeTravellersNFT,
     NFT.abi,
@@ -31,22 +31,21 @@ function Calendar({ provider }) {
     }
 
     const myImages = [];
-    myJsons.map((index) =>
-      myImages.push({
+    myJsons.map(
+      (index) => myImages.push(index.data.image)
+      /* myImages.push({
         time: index.data.attributes[2].value,
         image: index.data.image,
-      })
+      }) */
     );
     const finishedURLForImages = [];
 
     myImages.map((index) =>
-      finishedURLForImages.push(
-        `https://gateway.pinata.cloud/ipfs/${index.image}`
-      )
+      finishedURLForImages.push(`https://gateway.pinata.cloud/ipfs/${index}`)
     );
-    const dates = [];
-    myImages.map((index) => dates.push(index.time));
-    setDatesState(dates);
+    // const dates = [];
+    // myImages.map((index) => dates.push(index.time));
+    // setDatesState(dates);
 
     setFinishedImageURL(finishedURLForImages);
   }
@@ -91,11 +90,11 @@ function Calendar({ provider }) {
     fetchAllTweets();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  function convertUnix(unix) {
+  /* function convertUnix(unix) {
     let myDate = new Date(unix * 1000);
     myDate = myDate.toGMTString();
     return myDate;
-  }
+  } */
 
   /* async function mintToken() {
     const signer = provider.getSigner();
@@ -128,7 +127,7 @@ function Calendar({ provider }) {
           <div key={index.tokenID}>
             Proposed by: {index.owner}
             <br />
-            <div>Tweet of the day: {convertUnix(datesState[i])}</div>
+            {/* <div>Tweet of the day: {convertUnix(datesState[i])}</div> */}
             <img alt="tweets" width="300px" src={finishedImageURL[i]} />
           </div>
         ))}
