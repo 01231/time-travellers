@@ -4,7 +4,6 @@
 [![Licence](https://img.shields.io/github/license/noahliechti/time-travellers?style=social)](https://github.com/NoahLiechti/time-travellers/blob/main/LICENSE.md)
 [![Live Demo](https://img.shields.io/badge/Live Preview-Click Me-green.svg?style=social)](https://time-travellers.netlify.app)
 
-
 ## Problem statement
 
 Tweets on average last for about [15 minutes](https://the-refinery.io/blog/how-long-does-a-social-media-post-last). Afterwards they are gone. Forever. But how can we preserve good Tweets and how can we choose this Tweet so that everybody agrees?
@@ -28,8 +27,8 @@ We run on Rinkeby.
 - [Gnosis Safe](https://gnosis-safe.io/app/rin:0x1104Eed7b5A9d1338a5b4822dFB0d66fF4AC216D/balances): Multi-signature wallet to manage the DAO's assets
 - Hardhat
 - [Pinata](https://www.pinata.cloud/): NFT media management. We collect all suggested NFTs here.
-- Token Contract (ERC20) TODO: LINK
-- NFT Contract (ERC721) TODO: LINK
+- [Token Contract (ERC20)](https://rinkeby.etherscan.io/address/0x1856055f5aCF2C9694038d238fA9293181690131#code)
+- [NFT Contract (ERC721)](https://rinkeby.etherscan.io/address/0xaD795fdFEc37188337E6e75cFDA2Eb9C1DFF502d#code)
 
 #### IPFS
 
@@ -51,10 +50,9 @@ We interact with Pinata on some other occasions. Feel free to checkout the code.
 
 - responsive
 - accessible
-- SEO friendly TODO: screenshot of lighthouse
+- SEO friendly
 
 ### Backend
-
 
 - [Netlify](https://www.netlify.com/): We host the website here. Netlify automatically creates feature previews on pull requests.
   - scheduled functions: Like cron jobs
@@ -83,7 +81,7 @@ We used many technologies that were completely new to us. At the core of our app
 
 ### How can I get the governance tokens (TTT)?
 
-The easiest way is to buy some of our tokens on [Uniswap](https://app.uniswap.org/#/swap?chain=rinkeby). We created a liquidity pool with 80% of the total governance tokens. All you need is some Rinkeby test Ether. Add this Token TODO: `0x1856055f5aCF2C9694038d238fA9293181690131` to the token list on Uniswap.
+The easiest way is to buy some of our tokens on [Uniswap](https://app.uniswap.org/#/swap?chain=rinkeby). We created a liquidity pool with 80% of the total governance tokens. All you need is some Rinkeby test Ether. Add this Token `0x1856055f5aCF2C9694038d238fA9293181690131` to the token list on Uniswap.
 
 ### How can I become part of Time Travellers DAO?
 
