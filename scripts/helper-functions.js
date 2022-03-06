@@ -126,10 +126,11 @@ exports.verifyContract = async (contract, args) => {
   console.log("Waiting 5 block confirmations...");
   await contract.deployTransaction.wait(5); // needed if verifyContract() is called immediately after deployment
   try {
-    console.log("Verifying contract...");
+    console.log(`Verifying contract ${address}...`);
     await hre.run("verify:verify", {
       address: address,
       constructorArguments: args,
+      // contract: "contracts/Example.sol:ExampleContract",
     });
   } catch (err) {
     if (err.message.includes("Reason: Already Verified")) {
