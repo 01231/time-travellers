@@ -4,6 +4,7 @@ import { ThemeProvider, CssBaseline } from "@mui/material";
 import { ethers } from "ethers";
 import Main from "./Components/Main";
 import theme from "./config/theme";
+import SecondPage from "./Components/SecondPage";
 
 function App() {
   const [account, setAccount] = useState("");
@@ -78,7 +79,12 @@ function App() {
               />
             }
           />
+
           <Route path="*" element={<div>404</div>} />
+          <Route
+            path="/Calendar"
+            element={<SecondPage provider={provider} />}
+          />
         </Routes>
       </Router>
     </ThemeProvider>

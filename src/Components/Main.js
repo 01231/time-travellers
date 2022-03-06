@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Container, Typography, Box, Grid } from "@mui/material";
 import GLOBE from "vanta/dist/vanta.globe.min";
-
+import { Link } from "react-router-dom";
 import Calendar from "./Calendar";
 import Header from "./Header";
 import Footer from "./Footer";
@@ -37,6 +37,7 @@ function Main({ account, network, getAccount, provider }) {
 
   return (
     <Container maxWidth="md">
+      <Link to="/Calendar">Galery page</Link>
       <Box
         sx={{
           minHeight: "100%",
