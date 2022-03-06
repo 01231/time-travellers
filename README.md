@@ -68,6 +68,16 @@ We run on Rinkeby.
 
 - Chai/Mocha/Waffle: Test suite for our smart contract tests
 
+## Challenges
+
+### Onchain vs. offchain governace
+
+We decided to use offchain governance with Snaphot. With this approach our users save gas without sacrificing decentralization, transparency and security.
+
+### Make tokens decentralized 
+
+Providing a decentralized token within one week was quiet hard. We determined it would be best to use a multisig wallet that stores most of the DAO's funds and also provides liquidity to a uniswap liquidity pool.
+
 ## Q&A
 
 ### How can I get the governance tokens (TTT)?
