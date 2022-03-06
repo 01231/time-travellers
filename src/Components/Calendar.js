@@ -72,14 +72,20 @@ function Calendar() {
       <Typography sx={{ textAlign: "center" }}>
         The winner from yesterday:
       </Typography>
-      <Card variant="outlined" sx={{ width: 1, mt: 2 }}>
-        <CardMedia
-          component="img"
-          image={image}
-          alt="screenshot of tweet"
-          width="100%"
-        />
-      </Card>
+      <a
+        href="https://testnets.opensea.io/0xad795fdfec37188337e6e75cfda2eb9c1dff502d"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <Card variant="outlined" sx={{ width: 1, mt: 2 }}>
+          <CardMedia
+            component="img"
+            image={image}
+            alt="screenshot of tweet"
+            width="100%"
+          />
+        </Card>
+      </a>
     </Box>
   );
 }
