@@ -118,7 +118,7 @@ const createProposal = async (markdown, choices, title) => {
       body: markdown,
       choices: choices,
       start: formatDate(Date.now()),
-      end: formatDate(Date.now() + 1000 * 60 * 30), // + 23 hours
+      end: formatDate(Date.now() + 1000 * 60 * 5), // + 23 hours
       snapshot: blockNumber, // TODO: how far back do we want to go?
       network: "4",
       strategies: strategies,
