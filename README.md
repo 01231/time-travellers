@@ -88,6 +88,10 @@ We decided to use offchain governance with Snaphot. With this approach our users
 
 Providing a decentralized token within one week was quiet hard. We determined it would be best to use a multisig wallet that stores most of the DAO's funds and also provides liquidity to a uniswap liquidity pool.
 
+### New technologies
+
+We used many technologies that were completely new to us. At the core of our application is Snapshot, which all of of us have never used before. We spent a lot of time reading the docs. The documentation was incomplete and snapshot is still relatively new. This made it even harder for us. Fortunately the snapshot devs on discord were very cooperative!
+
 ## Q&A
 
 ### How can I get the governance tokens (TTT)?
