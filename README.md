@@ -83,7 +83,7 @@ We used many technologies that were completely new to us. At the core of our app
 
 ### How can I get the governance tokens (TTT)?
 
-The easiest way is to buy some of our tokens on [Uniswap](https://app.uniswap.org/#/swap?chain=rinkeby). We created a liquidity pool with 80% of the total governance tokens. All you need is some Rinkeby test Ether. Add this Token TODO: `0x6C74aDc0D6dB2Ca6A9758EE28BD86a66c922A5AB` to the token list on Uniswap.
+The easiest way is to buy some of our tokens on [Uniswap](https://app.uniswap.org/#/swap?chain=rinkeby). We created a liquidity pool with 80% of the total governance tokens. All you need is some Rinkeby test Ether. Add this Token TODO: `0x1856055f5aCF2C9694038d238fA9293181690131` to the token list on Uniswap.
 
 ### How can I become part of Time Travellers DAO?
 
