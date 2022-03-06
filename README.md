@@ -4,6 +4,21 @@
 [![Licence](https://img.shields.io/github/license/noahliechti/time-travellers?style=social)](https://github.com/NoahLiechti/time-travellers/blob/main/LICENSE.md)
 [![Live Demo](https://img.shields.io/badge/Live Preview-Click Me-green.svg?style=social)](https://time-travellers.netlify.app)
 
+## Checklist
+
+- [ ] video demo your project for at most 3 minutes
+- [ ] fill out from
+  - [ ] You must provide a link to the public repository for your project
+  - [ ] You must provide a link to your live project
+  - [ ] You must designate one member of your team as the lead to act as the main point of contact should we need to reach out
+
+- [ ] The name and summary of the project
+- [ ] How the project uses to IPFS and/or Filecoin and/or decentralized storage services that build on top of either with example links to where in code those technologies are used.
+- [ ] Names/pseudonyms of team members and contact info (e.g., GitHub handle, email address, or other)
+- [ ] Provide comprehensive README, incl. a clear description of the work and mention of how our tech is used in the Technologies Used section of README.
+- [ ] 2-3 minute video that presents the idea, including a brief demo that demonstrates the use of IPFS and/or Filecoin or anything that builds on top of them.
+- [ ] Include a link to the working demo or provide a testing guide
+
 ## TODO
 
 - when no metamask is installed, website crashes
