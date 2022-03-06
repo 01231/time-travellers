@@ -1,5 +1,6 @@
-import { Toolbar, AppBar, IconButton, Typography } from "@mui/material";
+import { Toolbar, AppBar, IconButton, Typography, Box } from "@mui/material";
 import { ReactComponent as LogoIcon } from "../assets/icons/logo.svg";
+import Social from "./Social";
 
 function Footer() {
   const scrollToTop = () => {
@@ -41,6 +42,16 @@ function Footer() {
         >
           <LogoIcon height="48px" />
         </IconButton>
+        <Box
+          sx={{
+            display: { xs: "none", md: "flex" },
+            flexDirection: "row",
+            justifyContent: "center",
+            gap: { sx: 1, sm: 3 },
+          }}
+        >
+          <Social />
+        </Box>
         <Typography
           variant="body2"
           sx={{ textAlign: "end", fontWeight: "bold" }}
