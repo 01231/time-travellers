@@ -27,7 +27,7 @@ const getCurrentChoiceNr = async () => {
   const dates = getDates();
   const { start, end } = dates;
 
-  // allow only tweets that were created today TODO: filter for env?
+  // allow only tweets that were created today
   const metadataFilter = `&metadata[keyvalues]={"date":{"value":"${start}","secondValue":"${end}","op":"between"},"type":{"value":"tweet","op":"eq"}}`;
 
   return fetch(
@@ -128,7 +128,6 @@ exports.handler = async (event) => {
     const tweetCreatedAt = new Date(metadata.attributes[2].value).toISOString();
     const choice = await getCurrentChoiceNr();
 
-    // TODO: if second fails revert first one
     const ipfsImagePath = await uploadToPinata(
       imageData,
       `${prefix}${tweetId}.png`,

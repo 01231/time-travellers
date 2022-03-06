@@ -97,7 +97,6 @@ exports.getMetadata = async (tweetURL, theme) => {
           const attributes = getAttributes(res, theme);
 
           const metadata = {
-            // TODO: change name and description
             name: `@${username} #${tweetId}`,
             description: `Tweet by @${username}.\nOriginal: ${tweetURL}`,
             external_link: "https://time-travellers.netlify.app",
