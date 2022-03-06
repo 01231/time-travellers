@@ -36,7 +36,7 @@ Our project is fully functional and deployed [here](https://time-travellers.netl
 We run on Rinkeby.
 
 - [Snapshot](https://snapshot.org/#/3.spaceshot.eth/about): An off-chain gasless multi-governance client with easy to verify and hard to contest results
-  - [Snapshot.js](https://docs.snapshot.org/snapshot.js): The official JavaScript client for build Snapshot apps. We create dynamic proposals at midnight
+  - [Snapshot.js](https://docs.snapshot.org/snapshot.js): The official JavaScript client for build Snapshot apps. We create dynamic proposals at midnight with it
   - [Webhooks](https://docs.snapshot.org/webhooks): Receive event notifications with webhooks. We used it to trigger the minting of the winner Tweet after a proposal has ended
   - [GraphQL API](https://docs.snapshot.org/graphql-api): Create flexible queries for the data you need to integrate with Snapshot. We used it to calculate the Tweet that has received to most votes
 - [Gnosis Safe](https://gnosis-safe.io/app/rin:0x1104Eed7b5A9d1338a5b4822dFB0d66fF4AC216D/balances): Multi-signature wallet to manage the DAO's assets
@@ -51,6 +51,12 @@ We run on Rinkeby.
 - ethers.js
 - [MUI](https://mui.com/): React UI Library
 
+#### Features
+
+- responsive
+- accessible
+- SEO friendly TODO: screenshot of lighthouse
+
 ### Backend
 
 - [Netfliy](https://www.netlify.com/): We host the website here. Netlify automatically creates feature previews on pullrequests.
@@ -62,49 +68,45 @@ We run on Rinkeby.
 
 - Chai/Mocha/Waffle: Test suite for our smart contract tests
 
+## Q&A
 
-## Functionality
+### How can I get the governance tokens (TTT)?
 
-- A tweet can only be suggested once
-- The voting period on the proposal is 23h
-- We use UTC time
-- Everybody that holds TTT can vote on a proposal
-- I your suggested NFT is chosen as a winner we mint it to you
-- If the voting ends in a draw, the tweet that was proposed first wins
+The easiest way is to buy some of our tokens on [Uniswap](https://app.uniswap.org/#/swap?chain=rinkeby). We created a liquidity pool with 80% of the total governance tokens. All you need is some Rinkeby test Ether. Add this Token TODO: `0x6C74aDc0D6dB2Ca6A9758EE28BD86a66c922A5AB` to the token list on Uniswap.
 
-## Notes
+### How can I become part of Time Travellers DAO?
 
-- you become a DAO member if you hold the TTT in your wallet
-- you voting power is dependent of the amount of coins you are holding
+To be part of our community you need to hold TTT, which is our own governance tokens
 
-- timelock is one week but we removed it for testing purposes
+### How can I vote on proposals?
 
-## Website
+All DAO members are allowed to vote on proposals. Your voting power is dependant on how many tokens you hold. Go to [Snapshot](https://snapshot.org/#/3.spaceshot.eth) and look for the most recent active Proposal.
 
-- responsive
-- accessible
-- SEO friendly
+### What happens to the NFT that received the most votes?
 
-## Future
+The NFT will be minted to the address from which the NFT was suggested.
 
-- host site on IPFS
-- use web3react to connect to metamask
+### Why can't I vote on the proposal even though I hold TTT in my wallet?
 
-## Features
+You need to hold the tokens for at least one week. With this method the DAO can ensure the quality of the votes. (This feature is turned off for demonstration purposes)
 
-## Extensions (if too much time)
+### What happens when two or more Tweet receive the same amount of votes?
 
-- host site on IPFS
-- use web3react to connect to metamask
+The Tweet that was proposed first wins.
 
-## Future
+### What is the voting period of the proposals?
 
-### Dedicated Pinata gateway
+The voting period on the proposal is 23h.
 
-- greater speed
-- increased rate limits
+### How much voting power do I have?
 
-### ENS Domain
+Your voting power is dependent of the amount of tokens you are holding.
 
-- Receive funds on own domain
-- Stop using test mode in snapshot
+## Production checklist
+
+- [ ] Dedicated Pinata gateway
+   - greater speed
+   - increased rate limits
+- [ ] ENS Domain
+  - Receive funds on own domain
+  - Stop using test mode in snapshot
