@@ -8,6 +8,7 @@ import Footer from "./Footer";
 import Propose from "./Propose";
 import Title from "./Title";
 import Faq from "./Faq";
+import Roadmap from "./Roadmap";
 
 function Main({ account, network, getAccount, provider }) {
   const [vantaEffect, setVantaEffect] = useState(0);
@@ -70,9 +71,15 @@ function Main({ account, network, getAccount, provider }) {
             getAccount={getAccount}
           />
         </Grid>
-        <Grid id="faq" item xs={12}>
-          <Typography variant="h2" sx={{ mt: 4, mb: 2, textAlign: "center" }}>
-            Frequently asked Questions
+        <Grid id="roadmap" item xs={12} md={6}>
+          <Typography variant="h2" sx={{ mt: 4, mb: 2 }}>
+            Roadmap
+          </Typography>
+          <Roadmap />
+        </Grid>
+        <Grid id="faq" item xs={12} md={6}>
+          <Typography variant="h2" sx={{ mt: 4, mb: 2 }}>
+            FAQ
           </Typography>
           <Faq />
         </Grid>
