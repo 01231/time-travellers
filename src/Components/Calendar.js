@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
-import { Box, Card, CardMedia } from "@mui/material";
+import { Box, Card, Typography, CardMedia } from "@mui/material";
 import timeTravellersNFT from "../config/contracts/TimeTravellersNFT.json";
 import addressMap from "../config/contracts/map.json";
 import {
@@ -69,6 +69,9 @@ function Calendar() {
   return (
     <Box>
       {/* Proposed by: Date */}
+      <Typography sx={{ textAlign: "center" }}>
+        The winner from yesterday:
+      </Typography>
       <Card variant="outlined" sx={{ width: 1, mt: 2 }}>
         <CardMedia
           component="img"
