@@ -45,6 +45,16 @@ We run on Rinkeby.
 - Token Contract (ERC20) TODO: LINK
 - NFT Contract (ERC721) TODO: LINK
 
+#### IPFS
+
+We us IPFS for all our core functionality.
+
+1. **User suggests a Tweet**: When a user suggests a Tweet, we store it in Pinata and enrich it with additional Metadata. [Link to Code](https://github.com/noahliechti/time-travellers/blob/main/functions/token.js#L102)
+2. **Create Proposal with cron job**: Every day at midnight UTC our cron job gets called and creates a dynamic proposal based on the Tweets that were suggested the day before. We use snapshot.js for this. Snaphot uses IPFS under the hood to store the proposals and votes. [Link to Code](https://github.com/noahliechti/time-travellers/blob/main/functions/proposal.js#L114)
+3. **Mint Tweet**: After the proposal has ended the webhook of Snapshot calls our serverless function. We analyze the votes with the GraphQL API from Snapshot, grab the address of the person that suggested the Tweet from Pinata and mint the Tweet directly to this person. [Link to Code](https://github.com/noahliechti/time-travellers/blob/main/functions/mint.js#L132)
+
+We interact with Pinata on some other occasions. Feel free to checkout the code.
+
 ### Frontend
 
 - React
