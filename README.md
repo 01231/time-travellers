@@ -25,7 +25,7 @@ Tweets on average last for about [15 minutes](https://the-refinery.io/blog/how-l
 
 ## Our solution
 
-Time Travellers DAO provides a user interface that allows every person with a MetaMask account to suggest their favourite Tweet of that day. During the day the Tweets are collected and a the of a day (UTC) a proposal is created on Snapshot. All DAO members now can vote for the Tweet that they like the most. After the voting period has ended we mint the "winner" Tweet to the person that suggested it.
+Time Travellers DAO provides a user interface that allows every person with a MetaMask account to suggest their favourite Tweet of that day. During the day the Tweets are collected and at the end of the day (UTC) a proposal is created on Snapshot. All DAO members now can vote for the Tweet that they like the most. After the voting period has ended we mint the "winner" Tweet to the person that suggested it.
 
 ## Implementation
 
