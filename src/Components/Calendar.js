@@ -73,7 +73,7 @@ function Calendar() {
         The winner from yesterday:
       </Typography>
       <a
-        href="https://testnets.opensea.io/0xad795fdfec37188337e6e75cfda2eb9c1dff502d"
+        href="https://testnets.opensea.io/collection/time-travellers-nft-vdinxbu2if"
         target="_blank"
         rel="noopener noreferrer"
       >
