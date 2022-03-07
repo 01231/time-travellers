@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Stack, Button, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { HashLink } from "react-router-hash-link";
 
 function Vote() {
@@ -66,7 +66,17 @@ function Vote() {
         We preserve history that matters! Vote and suggest your favourite Tweets
         and we keep them for eternity.
       </Typography>
-      <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          flexDirection: { xs: "column", sm: "row" },
+          rowGap: 2,
+          columnGap: 2,
+          mt: 2,
+          pr: { xs: 2, sm: 0 },
+        }}
+      >
         <Button
           variant="contained"
           to="/#propose"
@@ -85,7 +95,7 @@ function Vote() {
         >
           Vote on Snapshot
         </Button>
-      </Stack>
+      </Box>
     </Box>
   );
 }
